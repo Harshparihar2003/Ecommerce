@@ -1,7 +1,7 @@
 const { generateToken } = require("../config/jwtToken");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-
+const validateMongoDbId = require("../utils/validateMongoDb");
 
 // Create a user
 const createUser = asyncHandler(async (req, res) => {
@@ -15,6 +15,7 @@ const createUser = asyncHandler(async (req, res) => {
         // Create a new user
         const newUser = await User.create(req.body);
         res.send(newUser);
+        console.log(newUser)
     }
     else{
         //User already exist
@@ -52,6 +53,7 @@ const loginUserCtrl = asyncHandler(async (req,res)=>{
 // Updata a user
 
 const updateUser = asyncHandler(async (req,res)=>{
+    validateMongoDbId(req.params.id)
     try {
         const updateUser = await User.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -86,6 +88,7 @@ const getAllUser = asyncHandler(async (req,res)=>{
 // Get a user
 
 const getAUser = asyncHandler(async (req,res)=>{
+    validateMongoDbId(req.params.id);
     try {
         const getUser = await User.findById(req.params.id);
         if(getUser){
@@ -101,6 +104,7 @@ const getAUser = asyncHandler(async (req,res)=>{
 
 // Delete a user
 const deleteAUser = asyncHandler(async (req,res)=>{
+    validateMongoDbId(req.params.id)
     try {
         const deleteUser = await User.findByIdAndDelete(req.params.id);
         if(deleteUser){
@@ -117,7 +121,43 @@ const deleteAUser = asyncHandler(async (req,res)=>{
     }
 })
 
+const blockUser = asyncHandler(async (req,res)=>{
+    validateMongoDbId(req.params.id)
+    const {id} = req.params;
+    try {
+        const blockusr = await User.findByIdAndUpdate(id, {
+            isBlock : true,
+        },{
+            new : true,
+        }
+        );
+        // res.json({
+        //     message : "User blocked"
+        // })
+        res.json(blockusr)
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+const unblockUser = asyncHandler(async (req,res)=>{
+    validateMongoDbId(req.params.id)
+    const {id} = req.params;
+    try {
+        const unblock = await User.findByIdAndUpdate(id, {
+            isBlock : false,
+        },{
+            new : true,
+        }
+        );
+        res.json({
+            message : "User unblocked"
+        })
+    } catch (error) {
+        throw new Error(error);
+    }
+})
 
 
 
-module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser}
+module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser}
