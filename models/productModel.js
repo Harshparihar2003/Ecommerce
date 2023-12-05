@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema({
     quantity : {
         type : Number,
         required : true,
+        // select : false
     },
     images : {
         type : Array,
@@ -48,7 +49,8 @@ const productSchema = new mongoose.Schema({
     },
     sold :{
         type : Number,
-        default : 0
+        default : 0,
+        // select : false we use this to hide this field from showing it to users
     }
 }, {
     timestamps : true
