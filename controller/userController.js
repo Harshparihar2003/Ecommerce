@@ -234,6 +234,44 @@ const unblockUser = asyncHandler(async (req,res)=>{
     }
 })
 
+const updatePassword = asyncHandler(async(req,res)=>{
+
+    const {_id} = req.user;
+    const password= req.body;
+    validateMongoDbId(_id);
+    const user = await User.findById(_id);
+    if(password){
+        user.password = password;
+        const updatePassword = await user.save();
+        res.json(updatePassword);
+    }else{
+        res.json(user);
+    }
 
 
-module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser, handleRefershToken, logOut}
+
+    // if(!req.body.password){
+    //     return res.status(400).send('Please add a password')
+    //     }
+    //     const salt = await bcrypt.genSalt(10);
+    //     const hashedPwd = await bcrypt.hash(req.body.password ,salt);
+    //     console.log("Hashed Password",hashedPwd)
+    //     try {
+    //         const user = await User.findOne({_id:req.user._id});
+    //         const updatedUser = await User.findByIdAndUpdate(user._id,{
+    //             password : hashedPwd
+    //             });
+    //             res.json({
+    //                 _id : updatedUser._id,
+    //                 name : updatedUser.name,
+    //                 email : updatedUser.email,
+    //                 phoneNumber : updatedUser.phoneNumber
+    //                 })
+    //                 } catch (error) {
+    //                     throw new Error(error);
+    //                     }
+})
+
+
+
+module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser, handleRefershToken, logOut, updatePassword}; 
