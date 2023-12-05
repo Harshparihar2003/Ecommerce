@@ -78,7 +78,7 @@ const handleRefershToken = asyncHandler(async (req,res)=>{
             res.json(accessToken);
         })
     })
-    
+
         // const cookie = CookieExtractor(req);
         // const refeshCookie = req.cookies["refeshToken"];
         // console.log('refeshCookie',refeshCookie)
@@ -97,6 +97,37 @@ const handleRefershToken = asyncHandler(async (req,res)=>{
         //                 res.json({token : generateToken(user._id)})
         //                 }
 
+// Logout the user
+const logOut = asyncHandler(async (req,res)=> {
+    try {
+        const cookie = req.cookies;
+        const refreshToken = cookie.refreshToken;
+        if(!refreshToken) throw new Error("No refresh token found");
+        const user = await User.findOne({ refreshToken });
+        // if(!user) throw new Error("User not found");
+        if(!user){
+            res.clearCookie("refreshToken",{
+                httpOnly : true,
+                secure : true,
+            });
+            return res.status(204) // forbidden
+        }
+        // await User.updateOne({ _id: user._id }, {$unset: { refreshToken: "" }});
+        await User.findOneAndUpdate({refreshToken : refreshToken }, {
+            refreshToken : "",
+        });
+        res.clearCookie("refreshToken",{
+            httpOnly : true,
+            secure : true,
+        });
+        res.sendStatus(204)
+        // res.clearCookie("refreshToken");
+        // res.json({ msg: "Logged out successfully!" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({ error: error.message });
+            }
+            })
 
 // Updata a user
 const updateUser = asyncHandler(async (req,res)=>{
@@ -133,7 +164,6 @@ const getAllUser = asyncHandler(async (req,res)=>{
 })
 
 // Get a user
-
 const getAUser = asyncHandler(async (req,res)=>{
     validateMongoDbId(req.params.id);
     try {
@@ -207,4 +237,4 @@ const unblockUser = asyncHandler(async (req,res)=>{
 
 
 
-module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser, handleRefershToken}
+module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser, handleRefershToken, logOut}
