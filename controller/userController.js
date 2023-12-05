@@ -2,6 +2,9 @@ const { generateToken } = require("../config/jwtToken");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongoDb");
+const { generateRefreshToken } = require("../config/refreshToken");
+const jwt = require("jsonwebtoken")
+const secret_key = "secretkey";
 
 // Create a user
 const createUser = asyncHandler(async (req, res) => {
@@ -35,6 +38,16 @@ const loginUserCtrl = asyncHandler(async (req,res)=>{
     const findUser = await User.findOne({email : email})
 
     if(findUser && await findUser.isPasswordMatched(password)){
+        const refreshToken = await generateRefreshToken(findUser?._id);
+        const updateUser = await User.findByIdAndUpdate(findUser.id, {
+            refreshToken : refreshToken
+        },{
+            new : true,
+        });
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 72*60*60*1000,
+        })
         res.json({
             _id : findUser?.id,
             firstname : findUser?.firstName,
@@ -50,8 +63,42 @@ const loginUserCtrl = asyncHandler(async (req,res)=>{
 
 })
 
-// Updata a user
+// Handle refresh token
+const handleRefershToken = asyncHandler(async (req,res)=>{
+        const cookie = req.cookies;
+        if(!cookie?.refreshToken) throw new Error("No refresh token in cookies");
+        const refreshToken = cookie.refreshToken;
+        const user = await User.findOne({ refreshToken});
+        if(!user) throw new Error("No refresh token present in db or not matched");
+        jwt.verify(refreshToken, secret_key, (err, decoded) => {
+            if(err || user.id !== decoded.id){
+                throw new Error("There is something wrong with refresh token")
+            }
+            const accessToken = generateToken(user?._id);
+            res.json(accessToken);
+        })
+    })
+    
+        // const cookie = CookieExtractor(req);
+        // const refeshCookie = req.cookies["refeshToken"];
+        // console.log('refeshCookie',refeshCookie)
+        // if(!refeshCookie){
+        //     return res.status(401).send({msg:"You are not logged in"});
+        //     }else{
+        //         const user = await User.findByCredentials(cookie.email, cookie.password);
+        //         if (!user) {
+        //             throw new Error();
+        //             }
+        //             const newRefreshToken = await generateRefreshToken(user?._id);
+        //             await User.updateOne({_id : user._id},{$set:{refreshToken : newRefreshToken}})
+        //             res.clearCookie("refeshToken");
+        //             res.cookie("refeshToken",newRefreshToken,{httpOnly :true,maxAge : 72 * 60
+        //                 * 60 * 1000})
+        //                 res.json({token : generateToken(user._id)})
+        //                 }
 
+
+// Updata a user
 const updateUser = asyncHandler(async (req,res)=>{
     validateMongoDbId(req.params.id)
     try {
@@ -160,4 +207,4 @@ const unblockUser = asyncHandler(async (req,res)=>{
 
 
 
-module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser}
+module.exports = { createUser , loginUserCtrl , getAllUser , getAUser , deleteAUser , updateUser , blockUser, unblockUser, handleRefershToken}
