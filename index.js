@@ -6,19 +6,23 @@ const dbConnect = require("./config/dbconnect");
 const app = express();
 const bodyPaser = require("body-parser")
 const authRouter = require("./routes/authRoutes");
+const productRouter = require("./routes/productRoutes")
 const { notFound, errorHandler } = require("./middleware/errorHandling");
 const cookieParser = require("cookie-parser")
+const morgan = require("morgan")    
 
 // const PORT = process.env.PORT || 3000;
 const PORT = 5000;
 
 dbConnect();
+app.use(morgan("dev"))
 app.use(express.json())
 // app.use(bodyPaser.json());
 // app.use(bodyPaser.urlencoded({extended : false}))
 app.use(cookieParser())
 
 app.use("/api/user", authRouter);
+app.use("/api/product", productRouter);
 
 app.use("/",(req,res)=>{
     res.send("Hello from the server side");

@@ -18,7 +18,6 @@ const createUser = asyncHandler(async (req, res) => {
         // Create a new user
         const newUser = await User.create(req.body);
         res.send(newUser);
-        console.log(newUser)
     }
     else{
         //User already exist
