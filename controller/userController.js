@@ -1,7 +1,8 @@
 const { generateToken } = require("../config/jwtToken");
+const mongoose = require("mongoose")
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-const validateMongoDbId = require("../utils/validateMongoDb");
+const {validateMongoDbId} = require("../utils/validateMongoDb");
 const { generateRefreshToken } = require("../config/refreshToken");
 const jwt = require("jsonwebtoken")
 const secret_key = "secretkey";
@@ -164,14 +165,14 @@ const getAllUser = asyncHandler(async (req,res)=>{
 
 // Get a user
 const getAUser = asyncHandler(async (req,res)=>{
-    validateMongoDbId(req.params.id);
-    try {
-        const getUser = await User.findById(req.params.id);
+    const {id} = req.params
+    validateMongoDbId(id);
+    try {   
+        const getUser = await User.findById(id);
         if(getUser){
             res.json(getUser)
-        }
-        else{
-            throw new Error("User not found")
+        }else{
+            res.status(404).json({ error: 'User not found' });
         }
     } catch (error) {
         throw new Error(error);
@@ -235,41 +236,16 @@ const unblockUser = asyncHandler(async (req,res)=>{
 })
 
 const updatePassword = asyncHandler(async(req,res)=>{
-
     const {_id} = req.user;
-    const password= req.body;
-    validateMongoDbId(_id);
-    const user = await User.findById(_id);
-    if(password){
-        user.password = password;
-        const updatePassword = await user.save();
-        res.json(updatePassword);
-    }else{
-        res.json(user);
-    }
-
-
-
-    // if(!req.body.password){
-    //     return res.status(400).send('Please add a password')
-    //     }
-    //     const salt = await bcrypt.genSalt(10);
-    //     const hashedPwd = await bcrypt.hash(req.body.password ,salt);
-    //     console.log("Hashed Password",hashedPwd)
-    //     try {
-    //         const user = await User.findOne({_id:req.user._id});
-    //         const updatedUser = await User.findByIdAndUpdate(user._id,{
-    //             password : hashedPwd
-    //             });
-    //             res.json({
-    //                 _id : updatedUser._id,
-    //                 name : updatedUser.name,
-    //                 email : updatedUser.email,
-    //                 phoneNumber : updatedUser.phoneNumber
-    //                 })
-    //                 } catch (error) {
-    //                     throw new Error(error);
-    //                     }
+    const {password}= req.body;
+        const user = await User.findById(_id);
+        if(password){
+            user.password = password;
+            const updatePassword = await user.save();
+            res.json(updatePassword);
+        }else{
+            res.json(user);
+        }
 })
 
 

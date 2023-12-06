@@ -7,19 +7,20 @@ const secret_key = "secretkey";
 
 const authMiddleware = asyncHandler(async (req, res,next)=>{
     let token;
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+    if(req?.headers?.authorization?.startsWith('Bearer')){
         try {
             token = req.headers.authorization.split(' ')[1];
             // decode the token and get user data out of it
             const decoded = jwt.verify(token, secret_key);
-            req.user = await User.findById(decoded.id);
+            const user = await User.findById(decoded?.id);
+            console.log(user)
+            req.user = user;
             next();
             } catch (err) {
-                console.error(`Error verifying token: ${err}`);
-                res.status(401).send({message:"Not authorized to access this resource,Please login again"})
+                throw new Error("Not Authorized token expired, Please login again")
                 }
                 } else {
-                    res.status(401).send({message:"No token provided"});
+                    throw new Error("Thereis no token attached to header")
                     }
 })
 
