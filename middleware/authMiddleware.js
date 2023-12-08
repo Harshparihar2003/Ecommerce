@@ -13,7 +13,6 @@ const authMiddleware = asyncHandler(async (req, res,next)=>{
             // decode the token and get user data out of it
             const decoded = jwt.verify(token, secret_key);
             const user = await User.findById(decoded?.id);
-            console.log(user)
             req.user = user;
             next();
             } catch (err) {
