@@ -24,10 +24,6 @@ app.use(cookieParser())
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 
-app.use("/",(req,res)=>{
-    res.send("Hello from the server side");
-})
-
 app.use(notFound)
 app.use(errorHandler);
 
