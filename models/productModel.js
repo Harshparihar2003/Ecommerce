@@ -38,9 +38,16 @@ const productSchema = new mongoose.Schema({
         required: true
         // enum : ["Black", "Brown", "Red"]
     },
-    ratings : {
+    ratings : [{
         star : Number,
-        postedy : { type : mongoose.Schema.Types.ObjectId, ref : "User"}
+        comment : {
+            type : String
+        },
+        postedby : { type : mongoose.Schema.Types.ObjectId, ref : "User"}
+    }],
+    totalrating: {
+        type: String,
+        default : 0,
     },
     brand : {
         type : String,

@@ -1,10 +1,10 @@
 // const dotenv = require('dotenv')
 // dotenv.config();
+// const bodyPaser = require("body-parser")
 
 const express = require("express");
 const dbConnect = require("./config/dbconnect");
 const app = express();
-const bodyPaser = require("body-parser")
 const authRouter = require("./routes/authRoutes");
 const productRouter = require("./routes/productRoutes")
 const blogRouter = require("./routes/blogRoutes");
