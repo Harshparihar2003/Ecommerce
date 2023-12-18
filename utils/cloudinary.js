@@ -10,11 +10,32 @@ cloudinary.config({
     try{
       return await new Promise((resolve)=>{
         cloudinary.uploader.upload(fileToUpload,(result)=>{
-          console.log("Cloudinary upload successful")
-          console.log(result.secure_url)
             resolve(
                 {
                     url : result.secure_url,
+                    asset_id : result.asset_id,
+                    public_id : result.public_id
+                },{
+                    resource_type : "auto"
+                }
+            )
+        })
+    })
+    
+    }
+   catch(err){
+    throw new Error(err)
+   }
+  }
+  const  cloudinaryDeleteImg = async(fileToDelete) => {
+    try{
+      return await new Promise((resolve)=>{
+        cloudinary.uploader.destroy(fileToDelete,(result)=>{
+            resolve(
+                {
+                    url : result.secure_url,
+                    asset_id : result.asset_id,
+                    public_id : result.public_id
                 },{
                     resource_type : "auto"
                 }
@@ -28,4 +49,4 @@ cloudinary.config({
    }
   }
 
-  module.exports = {cloudinaryUploadImg}
+  module.exports = {cloudinaryUploadImg, cloudinaryDeleteImg}
