@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt")
 
-const orderSchema = new mongoose.Schema({
+const cartSchema = new mongoose.Schema({
     products : [
         {
             product : {
@@ -9,17 +9,12 @@ const orderSchema = new mongoose.Schema({
                 ref : "Product",
             },
             count : Number,
-            color : String
+            color : String,
+            price : Number
         }
     ],
-    paymentIntent : {},
-    orderStatus : {
-        type : String,
-        default : "Not Processed",
-        enum : [
-            "Not Processed", "Cash on Delivery", "Processing", "Dispatched", "Cancelled", "Delivered"
-        ],
-    },
+    cartTotal : Number,
+   totalAfterDiscount : Number,
     orderby : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "User",
@@ -29,4 +24,4 @@ const orderSchema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("Cart", cartSchema);
