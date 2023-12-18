@@ -21,6 +21,7 @@ const blogSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    images : [],
     isDisliked: {
         type: Boolean,
         default: false

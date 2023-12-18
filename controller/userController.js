@@ -23,11 +23,6 @@ const createUser = asyncHandler(async (req, res) => {
         res.send(newUser);
     }
     else{
-        //User already exist
-    //   res.json({
-    //     msg : "User already exist",
-    //     success : false,
-    //   })
       throw new Error("User already exist........")
     }
 })
@@ -36,9 +31,7 @@ const createUser = asyncHandler(async (req, res) => {
 const loginUserCtrl = asyncHandler(async (req,res)=>{
     const {email , password} = req.body;
     // Check if user exist or not
-
     const findUser = await User.findOne({email : email})
-
     if(findUser && await findUser.isPasswordMatched(password)){
         const refreshToken = await generateRefreshToken(findUser?._id);
         const updateUser = await User.findByIdAndUpdate(findUser.id, {
