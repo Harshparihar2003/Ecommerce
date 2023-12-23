@@ -16,7 +16,7 @@ const BlogCard = () => {
               A beautiful sunday morning renaissance
             </h5>
             <p className="desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quibusdam dolorem fugit veniam voluptates facere error ad enim adipisci nostrum nesciunt maxime impedit soluta cupiditate eaque, exercitationem nemo ipsam omnis amet pariatur ipsum cum atque libero asperiores? Incidunt eligendi dolorum accusantium?</p>
-            <Link className="button" to="/">Read More</Link>
+            <Link className="button" to="/blog/:id">Read More</Link>
           </div>
       </div>
     </>
