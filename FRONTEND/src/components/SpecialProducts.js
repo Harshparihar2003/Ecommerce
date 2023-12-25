@@ -14,7 +14,7 @@ const SpecialProducts = () => {
                                 Havels
                             </h5>
                             <h6 className="title">Samsung Galaxy Note10+ Mobile Phone; Sim...</h6>
-                            <ReactStars count={5} size={24} value="3" activeColor="#ffd700" edit={false} />
+                            <ReactStars count={5} size={24} value={3} activeColor="#ffd700" edit={false} />
                             <p className="price"><span className="red-p">$100</span> &nbsp; <strike>$200</strike></p>
                             <div className="discount-till d-flex align-items-ceter gap-10">
                                 <p className='mb-0'><b>5 </b>Days</p>
