@@ -4,13 +4,13 @@ import Marquee from 'react-fast-marquee'
 import BlogCard from '../components/BlogCard'
 import ProductCard from '../components/ProductCard'
 import SpecialProducts from '../components/SpecialProducts'
+import Container from '../components/Container'
 
 const Home = () => {
   return (
     <>
-      <section className="home-wrapper-1 py-5">
-        <div className="container-xxl">
-          <div className="row">
+    <Container class1="home-wrapper-1 py-5">
+    <div className="row">
             <div className="col-6">
               <div className="main-banner position-relative ">
                 <img src="images/main-banner-1.jpg" className='img-fluid rounded-3' alt="main banner"/>
@@ -59,11 +59,9 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="home-wrapper-2 py-5">
-        <div className="container-xxl">
-          <div className="row">
+    </Container>
+    <Container class1="home-wrapper-1 py-5">
+    <div className="row">
             <div className="col-12">
               <div className="services d-flex align-items-center justify-content-between">
                   <div className='d-flex align-items-center gap-15'><img src="images/service.png" alt="services"/><div><h6>Free Shipping</h6><p className='mb-0'>From all orders over $100</p></div></div>
@@ -74,8 +72,7 @@ const Home = () => {
               </div>  
             </div>
           </div>
-        </div>
-      </section>
+    </Container>
       <section className="home-wrapper-2 py-5">
         <div className="container-xxl">
           <div className="row">
