@@ -16,13 +16,15 @@ const colorRouter = require("./routes/colorRoutes");
 const enquiryRouter = require("./routes/enqRoute")
 const { notFound, errorHandler } = require("./middleware/errorHandling");
 const cookieParser = require("cookie-parser")
-const morgan = require("morgan")    
+const morgan = require("morgan")   
+const cors = require("cors") 
 
 // const PORT = process.env.PORT || 3000;
 const PORT = 5000;
-
 dbConnect();
+
 app.use(morgan("dev"))
+app.use(cors())
 app.use(express.json())
 // app.use(bodyPaser.json());
 // app.use(bodyPaser.urlencoded({extended : false}))

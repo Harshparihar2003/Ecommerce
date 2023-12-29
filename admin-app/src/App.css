@@ -97,3 +97,7 @@ main::-webkit-scrollbar{
   font-size: 28px;
   font-family: Roboto !important;
 }
+.error{
+  color: red;
+  font-size: 12px;
+}
