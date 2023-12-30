@@ -1,59 +1,59 @@
-const Model = require("../models/brandModel");
+const Brand = require("../models/brandModel");
 const asyncHandler = require("express-async-handler")
 const {validateMongoDbId} = require("../utils/validateMongoDb");
 
-const createModel = asyncHandler(async(req,res)=>{
+const createBrand = asyncHandler(async(req,res)=>{
     try {
-        const newModel = await Model.create(req.body);
-        res.json(newModel);
+        const newBrand = await Brand.create(req.body);
+        res.json(newBrand);
     } catch (error) {
         throw new Error(error)  
     }
 })
 
-const updateModel = asyncHandler(async(req,res)=>{
+const updateBrand = asyncHandler(async(req,res)=>{
     const {id} = req.params;
     validateMongoDbId(id)
     try {
-        const updateModel = await Model.findByIdAndUpdate(id, req.body, {
+        const updateBrand = await Brand.findByIdAndUpdate(id, req.body, {
             new : true,
         });
-        res.json(updateModel);
+        res.json(updateBrand);
     } catch (error) {
         throw new Error(error)
     }
 })
 
-const deleteModel = asyncHandler(async(req,res)=>{
+const deleteBrand = asyncHandler(async(req,res)=>{
     const {id} = req.params;
     validateMongoDbId(id);
     try {
-        const deletedModel = await Model.findByIdAndDelete(id);
-        res.json(deletedModel);
+        const deletedBrand = await Brand.findByIdAndDelete(id);
+        res.json(deletedBrand);
     } catch (error) {
         throw new Error(error)
     }
 })
 
-const getModel = asyncHandler(async(req,res)=>{
+const getBrand = asyncHandler(async(req,res)=>{
     const {id} = req.params;
     validateMongoDbId(id);
     try {
-        const Model = await Model.findById(id);
-        res.json(Model);
+        const Brand = await Brand.findById(id);
+        res.json(Brand);
         } catch (error) {
             throw new Error(error)
             }
 })
 
-const getAllModel = asyncHandler(async(req,res)=>{
+const getAllBrand = asyncHandler(async(req,res)=>{
     try {
-        const categories = await Model.find();
+        const categories = await Brand.find();
         res.json(categories);
         } catch (error) {
             throw new Error(error)
             }
 })
 
-module.exports = {createModel, updateModel, deleteModel, getModel, getAllModel}
+module.exports = {createBrand, updateBrand, deleteBrand, getBrand, getAllBrand}
 
