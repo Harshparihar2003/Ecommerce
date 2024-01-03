@@ -4,9 +4,9 @@ const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/", createEnquiry);
+router.get("/getEnquiry", authMiddleware, isAdmin , getAllEnquiry);
 router.put("/:id", authMiddleware, isAdmin ,updateEnquiry);
 router.delete("/:id", authMiddleware, isAdmin ,deleteEnquiry);
 router.get("/:id", authMiddleware, isAdmin ,getEnquiry);
-router.get("/getEnquiry", authMiddleware, isAdmin , getAllEnquiry);
 
 module.exports = router;

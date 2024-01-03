@@ -1,20 +1,26 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import pCategoryService from "./pcategoryService";
+import bCategoryService from "./bCategoryService";
 
-export const getCategories = createAsyncThunk("productCategory/get-categories", async(thunkAPI) => {
-        return await pCategoryService.getProductsCategories()
+
+
+export const getCategories = createAsyncThunk("blogCategory/get-categories", async(thunkAPI) => {
+    try {
+        return await bCategoryService.getBlogCategories()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)    
+    }
 })
                                                                         
 const initialState = {
-    pCategories : [],
+    bCategories : [],
     isError : false,
     isLoading : false,
     isSuccess : false,
     message : ""
 }
 
-export const pCategorySlice = createSlice({
-    name : "pCategories",
+export const bCategorySlice = createSlice({
+    name : "bCategories",
     initialState,
     reducers: {},
     extraReducers : (builder) =>{
@@ -25,7 +31,7 @@ export const pCategorySlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.pCategories = action.payload;
+            state.bCategories = action.payload;
         })
         .addCase(getCategories.rejected, (state,action)=>{
             state.isLoading = false;
@@ -36,4 +42,4 @@ export const pCategorySlice = createSlice({
     }
 }) ;
 
-export default pCategorySlice.reducer;
+export default bCategorySlice.reducer;

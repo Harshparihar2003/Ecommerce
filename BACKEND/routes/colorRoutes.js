@@ -4,9 +4,9 @@ const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/", authMiddleware, isAdmin ,createColor);
+router.get("/getcolor", authMiddleware, isAdmin , getAllColor);
 router.put("/:id", authMiddleware, isAdmin ,updateColor);
 router.delete("/:id", authMiddleware, isAdmin ,deleteColor);
 router.get("/:id", authMiddleware, isAdmin ,getColor);
-router.get("/getColor", authMiddleware, isAdmin , getAllColor);
 
 module.exports = router;
