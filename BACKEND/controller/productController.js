@@ -3,8 +3,7 @@ const asyncHandler = require("express-async-handler");
 const slugify = require("slugify")
 const User = require("../models/userModel")
 const {validateMongoDbId} = require("../utils/validateMongoDb");
-const {cloudinaryUploadImg, cloudinaryDeleteImg} = require("../utils/cloudinary")
-const fs = require("fs")
+
 
 const createProduct = asyncHandler(async (req, res)=>{
     try {
@@ -16,6 +15,37 @@ const createProduct = asyncHandler(async (req, res)=>{
     } catch (error) {
         throw new Error(error)
     }
+})
+
+
+const updateProduct = asyncHandler(async (req, res)=>{
+    const id = req.params;
+    try{
+        if(req.body.title){
+            req.body.slug = slugify(req.body.title);
+        }
+        // const updateProduct = await Product.findOneAndUpdate({id},req.body,{
+        //     new : true
+        // });
+        // res.json(updateProduct)
+        const productToUpdate = await Product.findByIdAndUpdate(req.params.id, req.body , {
+            new: true,
+            runValidators:true,
+            useFindAndModify: false
+            })
+            res.status(201).json({message:"Updated Successfully", data: productToUpdate});
+            }catch(err){
+                throw new Error(err)
+                }
+})
+
+const deleteProduct = asyncHandler(async (req,res)=>{
+    try{
+        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+        res.status(200).json({message:'Deleted successfully',data:deletedProduct});
+        }catch(err){
+            throw new Error(err)
+            }
 })
 
 const getAProduct = asyncHandler(async (req,res)=>{
@@ -154,66 +184,4 @@ const rating = asyncHandler(async(req,res)=>{
     }
 })
 
-const updateProduct = asyncHandler(async (req, res)=>{
-    const id = req.params;
-    try{
-        if(req.body.title){
-            req.body.slug = slugify(req.body.title);
-        }
-        // const updateProduct = await Product.findOneAndUpdate({id},req.body,{
-        //     new : true
-        // });
-        // res.json(updateProduct)
-        const productToUpdate = await Product.findByIdAndUpdate(req.params.id, req.body , {
-            new: true,
-            runValidators:true,
-            useFindAndModify: false
-            })
-            res.status(201).json({message:"Updated Successfully", data: productToUpdate});
-            }catch(err){
-                throw new Error(err)
-                }
-})
-
-const deleteProduct = asyncHandler(async (req,res)=>{
-    try{
-        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-        res.status(200).json({message:'Deleted successfully',data:deletedProduct});
-        }catch(err){
-            throw new Error(err)
-            }
-})
-
-const uploadImages = asyncHandler(async(req,res)=>{
-    try {
-        const uploader =  (path) => cloudinaryUploadImg(path,"images");
-        const urls = [];
-        const files = req.files;
-        for(const file of files){
-            const {path} = file;
-            const newPath = await uploader(path);
-            urls.push(newPath)
-            // fs.unlinkSync(path)
-        }
-        const images = urls.map((file)=>{
-            return file
-        });
-        res.json(images)
-    } catch (error) {
-        throw new Error(error)
-    }
-})
-const deleteImages = asyncHandler(async(req,res)=>{
-    const {id} = req.params
-    try {
-        // const deleted =  (path) => cloudinaryDeleteImg(path,"images");
-        const deleted = cloudinaryDeleteImg(id, "images")
-        res.json({message : "Image Deleted..."})
-        
-    } catch (error) {
-        throw new Error(error)
-    }
-})
-
-
-module.exports = {createProduct , getAProduct, getAllProduct , updateProduct, deleteProduct, addToWishList, rating, uploadImages, deleteImages}
+module.exports = {createProduct , getAProduct, getAllProduct , updateProduct, deleteProduct, addToWishList, rating}

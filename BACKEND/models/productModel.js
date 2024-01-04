@@ -30,9 +30,10 @@ const productSchema = new mongoose.Schema({
         required : true,
         // select : false
     },
-    images : {
-        type : Array,
-    },
+    images : [{
+        public_id : String,
+        url : String
+    }],
     color : {
         type : Array
     },
