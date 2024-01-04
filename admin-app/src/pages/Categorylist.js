@@ -24,17 +24,9 @@ const columns = [
 
 const Categorylist = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(getCategories());
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-  
-    fetchData();
-  }, [dispatch]);
+  useEffect(()=>{
+    dispatch(getCategories())
+  },[])
   const pCategoryState = useSelector((state)=> state.pCategory.pCategories)
   const data1 = [];
   for (let i = 0; i < pCategoryState.length; i++) {

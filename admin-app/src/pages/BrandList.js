@@ -32,7 +32,7 @@ const BrandList = () => {
   for (let i = 0; i < brandState.length; i++) {
     data1.push({
       key: i+1,
-      name: brandState[i].name,
+      name: brandState[i].title,
       action: <>
         <Link className='fs-3 text-danger' to="/"><BiEdit/></Link>
         <Link className='ms-3 fs-3 text-danger' to="/"><AiFillDelete/></Link>

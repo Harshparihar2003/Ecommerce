@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema({
         type : Array
     },
     tags : {
-        type : [],
+        type : String,
     },
     ratings : [{
         star : Number,

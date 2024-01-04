@@ -54,14 +54,17 @@ const ProductList = () => {
       title: productState[i].title,
       brand: productState[i].brand,
       category: productState[i].category,
-      color: productState[i].color,
+      color: productState[i].color.color,
       price: `${productState[i].price}`,
-      action: <>
+      action: (
+      <div>
         <Link className='fs-3 text-danger' to="/"><BiEdit/></Link>
         <Link className='ms-3 fs-3 text-danger' to="/"><AiFillDelete/></Link>
-      </>,
+      </div>
+      ),
     });
   }
+  console.log(data1)
   return (
     <div>
       <h3 className="mb-4 title">Products</h3>
