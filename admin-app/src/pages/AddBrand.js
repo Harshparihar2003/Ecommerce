@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import CustomInput from '../components/CustomInput'
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createBrands, getBrands } from '../features/brand/brandSlice';
+import { createBrands, getBrands, resetState } from '../features/brand/brandSlice';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
@@ -37,7 +37,7 @@ const AddBrand = () => {
       dispatch(createBrands(values));
       formik.resetForm();
       setTimeout(() => {
-        navigate("/admin/list-brand")
+        dispatch(resetState())
       }, 3000)
     }
   })

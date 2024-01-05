@@ -12,7 +12,7 @@ import { getColors } from "../features/color/colorSlice"
 import Dropzone from 'react-dropzone'
 import {Select} from "antd"
 import { delImg, uploadImg } from '../features/upload/uploadSlice';
-import {createProducts} from "../features/product/productSlice"
+import {createProducts, resetState} from "../features/product/productSlice"
 import { toast } from 'react-toastify';
 
 
@@ -95,7 +95,7 @@ toast.success('Product Added Successfully');
       formik.resetForm();
       setColor(null);
       setTimeout(()=>{
-        navigate("/admin/list-product")
+        dispatch(resetState())
       },3000)
     }
   })
