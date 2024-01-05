@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Layout, Menu, Button, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 import { SiBrandfolder } from "react-icons/si";
+import {RiCouponLine} from "react-icons/ri"
 import { BiCategoryAlt } from "react-icons/bi";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications } from "react-icons/io"
@@ -120,7 +121,27 @@ const MainLayout = () => {
               icon: <FaClipboardList className='fs-4' />,
               label: 'Orders',
 
-            }, {
+            },
+            {
+
+              key: 'marketing',
+              icon: <RiCouponLine className='fs-4' />,
+              label: 'Marketing',
+              children: [
+                {
+                  key: 'coupon',
+                  icon: <ImBlog className='fs-4' />,
+                  label: 'Add Coupon'
+                },
+                {
+                  key: 'coupon-list',
+                  icon: <RiCouponLine className='fs-4' />,
+                  label: 'Coupon List'
+                },
+              ]
+
+            },
+             {
 
               key: 'blogs',
               icon: <FaBloggerB className='fs-4' />,
@@ -147,7 +168,8 @@ const MainLayout = () => {
                 }
               ]
 
-            }, {
+            },
+             {
               key: 'enquiries',
               icon: <FaBloggerB className='fs-4' />,
               label: 'Enquiries'

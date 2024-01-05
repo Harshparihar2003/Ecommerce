@@ -11,6 +11,26 @@ const createBrand = asyncHandler(async(req,res)=>{
     }
 })
 
+const getBrand = asyncHandler(async(req,res)=>{
+    const {id} = req.params;
+    validateMongoDbId(id);
+    try {
+        const brand = await Brand.findById(id);
+        res.json(brand);
+        } catch (error) {
+            throw new Error(error)
+            }
+})
+
+const getAllBrand = asyncHandler(async(req,res)=>{
+    try {
+        const categories = await Brand.find();
+        res.json(categories);
+        } catch (error) {
+            throw new Error(error)
+            }
+})
+
 const updateBrand = asyncHandler(async(req,res)=>{
     const {id} = req.params;
     validateMongoDbId(id)
@@ -35,25 +55,7 @@ const deleteBrand = asyncHandler(async(req,res)=>{
     }
 })
 
-const getBrand = asyncHandler(async(req,res)=>{
-    const {id} = req.params;
-    validateMongoDbId(id);
-    try {
-        const Brand = await Brand.findById(id);
-        res.json(Brand);
-        } catch (error) {
-            throw new Error(error)
-            }
-})
 
-const getAllBrand = asyncHandler(async(req,res)=>{
-    try {
-        const categories = await Brand.find();
-        res.json(categories);
-        } catch (error) {
-            throw new Error(error)
-            }
-})
 
 module.exports = {createBrand, updateBrand, deleteBrand, getBrand, getAllBrand}
 
