@@ -3,12 +3,12 @@ const bcrypt = require("bcrypt")
 const crypto = require("crypto")
 
 const userSchema = new mongoose.Schema({
-    firstName : {
+    firstname : {
         type : String,
         required : true,
         index : true
     },
-    lastName : {
+    lastname : {
         type : String,
         required : true,
         index : true
