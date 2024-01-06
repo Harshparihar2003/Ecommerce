@@ -23,6 +23,7 @@ import AddProduct from './pages/AddProduct';
 import Couponlist from './pages/Couponlist';
 import AddCoupon from './pages/AddCoupon';
 import ViewEnq from './pages/ViewEnq';
+import ViewOrder from './pages/ViewOrder';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
               <Route path='blog-category' element={<AddBlogCat/>}></Route>
               <Route path='blog-category/:id' element={<AddBlogCat/>}></Route>
               <Route path='orders' element={<Orders/>}></Route>
+              <Route path='order/:id' element={<ViewOrder/>}></Route>
               <Route path='customers' element={<Customers/>}></Route>
               <Route path='list-color' element={<ColorList/>}></Route>
               <Route path='color' element={<AddColor/>}></Route>

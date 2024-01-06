@@ -460,20 +460,35 @@ const getOrders = asyncHandler(async(req,res)=>{
     const {_id} = req.user;
     validateMongoDbId(_id);
     try {
-        const userOrders = await Order.findOne({ orderby: _id }).populate("products.product").populate("orderby")
+        const userOrders = await Order.findOne({ orderby: _id }).populate("products.product").populate("orderby").exec()
         res.json(userOrders)
     } catch (error) {
         throw new Error(error)
     }
 });
+
 const getAllOrders = asyncHandler(async(req,res)=>{
     try {
-        const allUserOrders = await Order.find().populate("products.product").populate("orderby")
+        const allUserOrders = await Order.find().populate("products.product").populate("orderby").exec()
         res.json(allUserOrders)
     } catch (error) {
         throw new Error(error)
     }
 });
+
+const getOrderByUserId = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    validateMongoDbId(id);
+    try {
+      const userorders = await Order.findOne({ orderby: id })
+        .populate("products.product")
+        .populate("orderby")
+        .exec();
+      res.json(userorders);
+    } catch (error) {
+      throw new Error(error);
+    }
+  });
 
 const updateOrderStatus = asyncHandler(async(req,res)=>{
     const { status } = req.body;
@@ -498,4 +513,4 @@ const updateOrderStatus = asyncHandler(async(req,res)=>{
     }
 })
 
-module.exports = { createUser, loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart,emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus , getAllOrders}; 
+module.exports = { createUser, loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart,emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus , getAllOrders,getOrderByUserId}; 
