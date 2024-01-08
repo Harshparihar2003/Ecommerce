@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 
 const SpecialProducts = (props) => {
-    const {title,brand,totalrating,price,sold,quantity} = props;
+    const {title,brand,totalrating,price,sold,quantity, id} = props;
     return (
         <>
             <div className="col-6 mb-3">
@@ -32,7 +32,7 @@ const SpecialProducts = (props) => {
                                         <div className="progress-bar" role="progressbar" style={{width: (quantity/quantity+sold )* 100 + "%"}} aria-valuenow= {(quantity/quantity+sold )* 100} aria-valuemin={quantity} aria-valuemax={sold + quantity}></div>
                                     </div>
                                 </div>
-                                <Link className='button'>Add to Cart</Link>
+                                <Link className='button' to={"/product/" + id}>View</Link>
                         </div>
                     </div>
                 </div>

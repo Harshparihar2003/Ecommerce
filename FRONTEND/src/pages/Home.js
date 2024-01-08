@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink, Link } from "react-router-dom"
+import { NavLink, Link, useNavigate } from "react-router-dom"
 import ReactStars from "react-rating-stars-component";
 import Marquee from 'react-fast-marquee'
 import BlogCard from '../components/BlogCard'
@@ -23,7 +23,7 @@ import prodcompare from "../images/prodcompare.svg"
 const Home = () => {
   const dispatch = useDispatch();
   const productState = useSelector((state)=>state.product.product)
-  console.log(productState)
+  const navigate = useNavigate()
   const blogState = useSelector((state)=> state?.blog?.blog)
   useEffect(()=>{
       getblogs();
@@ -222,12 +222,7 @@ const addToWish = (id) =>{
                   if(item.tags === "popular"){
                     return(
                       <div key={index} className= "col-3">
-                <Link 
-                // to={`${
-                //     location.pathname == "/" 
-                //     ? "/product/:id" 
-                //     : location.pathname == "/product/:id" 
-                //     ? "/product/:id" : ":id"}`} 
+                <div 
                     className="product-card position-relative">
                     <div className="wishlist-icon position-absolute">
                         <button className='border-0 bg-transparent'  onClick={(e)=> addToWish(item?._id)} ><img src={wish} alt="wishlist"/></button>
@@ -249,11 +244,11 @@ const addToWish = (id) =>{
                     <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
                             <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
-                            <button  className='border-0 bg-transparent'><img src={view} alt="view" /></button>
+                            <button  className='border-0 bg-transparent'><img onClick={()=>navigate("/product/" + item?._id)} src={view} alt="view" /></button>
                             <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
                         </div>
                     </div>
-                </Link>
+                </div>
             </div>
                     )
                   }
@@ -273,12 +268,7 @@ const addToWish = (id) =>{
                   if(item.tags === "featured"){
                     return(
                       <div key={index} className= "col-3">
-                <Link 
-                // to={`${
-                //     location.pathname == "/" 
-                //     ? "/product/:id" 
-                //     : location.pathname == "/product/:id" 
-                //     ? "/product/:id" : ":id"}`} 
+                <div 
                     className="product-card position-relative">
                     <div className="wishlist-icon position-absolute">
                         <button className='border-0 bg-transparent'  onClick={(e)=> addToWish(item?._id)} ><img src={wish} alt="wishlist"/></button>
@@ -300,11 +290,11 @@ const addToWish = (id) =>{
                     <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
                             <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
-                            <button  className='border-0 bg-transparent'><img src={view} alt="view" /></button>
+                            <button  className='border-0 bg-transparent'><img onClick={()=>navigate("/product/" + item?._id)} src={view} alt="view" /></button>
                             <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
                         </div>
                     </div>
-                </Link>
+                </div>
             </div>
                     )
                   }
@@ -325,7 +315,7 @@ const addToWish = (id) =>{
                 productState && productState?.map((item,index)=>{
                   if(item.tags === "special"){
                     return(
-                      <SpecialProducts  key={index} title={item?.title}
+                      <SpecialProducts  key={index} id={item?._id} title={item?.title}
                       brand = {item?.brand}
                       totalrating = {item?.totalrating}
                       price = {item?.price}

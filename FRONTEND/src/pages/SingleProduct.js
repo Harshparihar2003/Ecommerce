@@ -1,22 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BreadCrumb from '../components/BreadCrumb'
 import Meta from '../components/Meta'
 import ReactStars from "react-rating-stars-component";
 import ProductCard from '../components/ProductCard'
 import ReactImageZoom from "react-image-zoom"
 import Color from '../components/Color';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {TbGitCompare} from "react-icons/tb"
 import {AiOutlineHeart} from "react-icons/ai"
 import watch from "../images/watch.jpg"
 import Container from '../components/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAProduct } from '../features/products/productSlice';
 
 const SingleProduct = () => {
+  const location = useLocation();
+  const getProductId = location.pathname.split("/")[2]
+  const dispatch = useDispatch();
+  const productState = useSelector((state)=> state.product.singleProduct)
+  useEffect(()=>{
+    dispatch(getAProduct(getProductId))
+  },[])
     const props = {
       width : 400,
       height : 600,
       zoomWidth : 600,
-      img : "https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg",
+      img : productState?.images[0]?.url ? productState?.images[0]?.url : "https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg",
     };
     const [orderedProduct, setorderedProduct] = useState(false);
     const copyToClipboard = (text) => {
@@ -41,23 +50,29 @@ const SingleProduct = () => {
                     </div>
                   </div>
                   <div className="other-product-images d-flex flex-wrap gap-15">
-                    <div><img src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg" alt="" className='img-fluid' /></div>
-                    <div><img src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg" alt="" className='img-fluid' /></div>
-                    <div><img src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg" alt="" className='img-fluid' /></div>
-                    <div><img src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg" alt="" className='img-fluid' /></div>
+                    {
+                      productState?.images.map((item,index)=>{
+                        return(
+                          <div><img
+                           src={item?.url}
+                          //  src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg"
+                           alt="" className='img-fluid' /></div>
+                        )
+                      })
+                    }
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="main-products-details">
                     <div className='border-bottom'>
                       <h3 className='title'>
-                        Kids Headphones Bulk 10 Pack Colored for Students
+                        {productState?.title}
                       </h3>
                     </div>
                     <div className="border-bottom py-3">
-                      <p className="price">$ 100</p>
+                      <p className="price">$ {productState?.price}</p>
                       <div className="d-flex align-items-center gap-10">
-                      <ReactStars count={5} size={24} value={3}activeColor="#ffd700" edit={false}/>
+                      <ReactStars count={5} size={24} value={productState?.totalrating}activeColor="#ffd700" edit={false}/>
                             <p className='mb-0 t-review'>(2 Reviews)</p>
                       </div>
                       <a className='review-btn' href="#review">Write a Review</a>
@@ -67,13 +82,13 @@ const SingleProduct = () => {
                             <h3 className='product-heading'>Type: </h3><p className='product-data'>Watch</p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Brand: </h3><p className='product-data'>Havels</p>
+                            <h3 className='product-heading'>Brand: </h3><p className='product-data'>{productState?.brand}</p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Category: </h3><p className='product-data'>Watch</p>
+                            <h3 className='product-heading'>Category: </h3><p className='product-data'>{productState?.category}</p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Tags: </h3><p className='product-data'>Watch</p>
+                            <h3 className='product-heading'>Tags: </h3><p className='product-data'>{productState?.tags}</p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
                             <h3 className='product-heading'>Availability: </h3><p className='product-data'>In Stock</p>
@@ -98,7 +113,7 @@ const SingleProduct = () => {
                             </div>
                             <div className='d-flex align-items-center gap-30 ms-5'>
                             <button className="button border-0" type='submit'>Add to Cart</button>
-                                <button className='button signup'>But it Now</button>
+                                <button className='button signup'>Buy it Now</button>
                             </div>
                           </div>
                           <div className='d-flex align-items-center gap-15'>
@@ -118,7 +133,7 @@ const SingleProduct = () => {
                           <div className='d-flex gap-10 align-items-center my-3'>
                             <h3 className='product-heading'>Product Link: </h3>
                             <a href="javascript:void(0);" onClick={()=>{
-                              copyToClipboard("https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg")
+                              copyToClipboard(window.location.href)
                             }}>
                               Copy Product Link
                             </a>
@@ -133,8 +148,7 @@ const SingleProduct = () => {
                 <div className="col-12">
                 <h4>Description</h4>
                   <div className="bg-white p-3">
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate harum eos fuga id, recusandae blanditiis. Quidem vero iure dolorem tempora. Maxime illum deserunt obcaecati. Dolore?
+                    <p dangerouslySetInnerHTML={{__html : productState?.description}}>
                     </p>
                   </div>
                 </div>
