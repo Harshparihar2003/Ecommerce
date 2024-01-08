@@ -263,46 +263,53 @@ const addToWish = (id) =>{
       </Container>
       <Container class1="featured-wrapper py-5 home-wrapper-2">
       <div className="row">
-            <div className="col-3">
-              <div className="famous-card position-relative">
-                <img src="images/catbanner-02.jpg" className='img-fluid' alt="famous" />
-                <div className="famous-content position-absolute">
-                  <h5>Big Screen</h5>
-                  <h6>Smart Watch</h6>
-                  <p>From $399</p>
-                </div>
+            <div className="col-12">
+              <h3 className="section-heading">
+                Featured Collection
+              </h3>
               </div>
+              {
+                productState && productState?.map((item,index)=>{
+                  if(item.tags === "featured"){
+                    return(
+                      <div key={index} className= "col-3">
+                <Link 
+                // to={`${
+                //     location.pathname == "/" 
+                //     ? "/product/:id" 
+                //     : location.pathname == "/product/:id" 
+                //     ? "/product/:id" : ":id"}`} 
+                    className="product-card position-relative">
+                    <div className="wishlist-icon position-absolute">
+                        <button className='border-0 bg-transparent'  onClick={(e)=> addToWish(item?._id)} ><img src={wish} alt="wishlist"/></button>
+                    </div>
+                    <div className="product-image">
+                        {/* <img src={item?.images[0].url} className='img-fluid d-block mx-auto' width={160} alt="product image" /> */}
+                        <img src={watch} className='img-fluid d-block mx-auto' width={160} alt="product image" />
+                        <img src={watch2} className='img-fluid' alt="product image" />
+                    </div>
+                    <div className="product-details">
+                        <h6 className="brand">{item?.brand}</h6>
+                        <h5 className="product-title">
+                            {item?.title}
+                        </h5>
+                        <ReactStars count={5} size={24} value={item?.totalrating.toString()} activeColor="#ffd700" edit={false}/>
+                       
+                        <p className="price">$ {item?.price}</p>
+                    </div>
+                    <div className="action-bar position-absolute">
+                        <div className="d-flex flex-column gap-15">
+                            <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
+                            <button  className='border-0 bg-transparent'><img src={view} alt="view" /></button>
+                            <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
+                        </div>
+                    </div>
+                </Link>
             </div>
-            <div className="col-3">
-              <div className="famous-card position-relative">
-                <img src="images/catbanner-02.jpg" className='img-fluid' alt="famous" />
-                <div className="famous-content position-absolute">
-                  <h5>Studio Display</h5>
-                  <h6>600 nots of Brightness</h6>
-                  <p>27-inch 5k Retina display</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-3">
-              <div className="famous-card position-relative">
-                <img src="images/catbanner-02.jpg" className='img-fluid' alt="famous" />
-                <div className="famous-content position-absolute">
-                  <h5>Smartphones</h5>
-                  <h6>Smartphone</h6>
-                  <p>From $999.00</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-3">
-              <div className="famous-card position-relative">
-                <img src="images/catbanner-02.jpg" className='img-fluid' alt="famous" />
-                <div className="famous-content position-absolute">
-                  <h5>Home Speakers</h5>
-                  <h6>Sound</h6>
-                  <p>From $699</p>
-                </div>
-              </div>
-            </div>
+                    )
+                  }
+                })
+              }
           </div>
       </Container>
       <Container class1="special-wrapper py-5 home-wrapper-2">
