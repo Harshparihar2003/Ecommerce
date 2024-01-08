@@ -1,13 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, Link } from "react-router-dom"
+import ReactStars from "react-rating-stars-component";
 import Marquee from 'react-fast-marquee'
 import BlogCard from '../components/BlogCard'
 import ProductCard from '../components/ProductCard'
 import SpecialProducts from '../components/SpecialProducts'
 import Container from '../components/Container'
 import {services} from "../utils/Data"
+import {useDispatch, useSelector} from "react-redux"
+import moment from "moment"
+import { getAllBlogs } from '../features/blog/blogSlice'
+import { getAllProducts } from '../features/products/productSlice'
+import { addToWishlist } from '../features/products/productSlice';
+import wish from "../images/wish.svg"
+import wishlist from "../images/wishlist.svg"
+import watch from "../images/watch.jpg"
+import watch2 from "../images/watch-2.jpg"
+import addcart from "../images/add-cart.svg"
+import view from "../images/view.svg"
+import prodcompare from "../images/prodcompare.svg"
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const productState = useSelector((state)=>state.product.product)
+  console.log(productState)
+  const blogState = useSelector((state)=> state?.blog?.blog)
+  useEffect(()=>{
+      getblogs();
+      getProducts()
+  },[])
+  const getblogs = () =>{
+      dispatch(getAllBlogs())
+  }
+ const getProducts = ()=>{
+    dispatch(getAllProducts())
+}
+const addToWish = (id) =>{
+  dispatch(addToWishlist(id))
+}
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
@@ -187,10 +217,48 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+          {
+                productState && productState?.map((item,index)=>{
+                  if(item.tags === "popular"){
+                    return(
+                      <div key={index} className= "col-3">
+                <Link 
+                // to={`${
+                //     location.pathname == "/" 
+                //     ? "/product/:id" 
+                //     : location.pathname == "/product/:id" 
+                //     ? "/product/:id" : ":id"}`} 
+                    className="product-card position-relative">
+                    <div className="wishlist-icon position-absolute">
+                        <button className='border-0 bg-transparent'  onClick={(e)=> addToWish(item?._id)} ><img src={wish} alt="wishlist"/></button>
+                    </div>
+                    <div className="product-image">
+                        {/* <img src={item?.images[0].url} className='img-fluid d-block mx-auto' width={160} alt="product image" /> */}
+                        <img src={watch} className='img-fluid d-block mx-auto' width={160} alt="product image" />
+                        <img src={watch2} className='img-fluid' alt="product image" />
+                    </div>
+                    <div className="product-details">
+                        <h6 className="brand">{item?.brand}</h6>
+                        <h5 className="product-title">
+                            {item?.title}
+                        </h5>
+                        <ReactStars count={5} size={24} value={item?.totalrating.toString()} activeColor="#ffd700" edit={false}/>
+                       
+                        <p className="price">$ {item?.price}</p>
+                    </div>
+                    <div className="action-bar position-absolute">
+                        <div className="d-flex flex-column gap-15">
+                            <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
+                            <button  className='border-0 bg-transparent'><img src={view} alt="view" /></button>
+                            <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
+                        </div>
+                    </div>
+                </Link>
+            </div>
+                    )
+                  }
+                })
+              }
           </div>
       </Container>
       <Container class1="featured-wrapper py-5 home-wrapper-2">
@@ -244,10 +312,24 @@ const Home = () => {
                 Special Products
               </h3>
             </div>
-            <SpecialProducts />
-            <SpecialProducts />
-            <SpecialProducts />
-            <SpecialProducts />
+          </div>
+          <div className="row">
+              {
+                productState && productState?.map((item,index)=>{
+                  if(item.tags === "special"){
+                    return(
+                      <SpecialProducts  key={index} title={item?.title}
+                      brand = {item?.brand}
+                      totalrating = {item?.totalrating}
+                      price = {item?.price}
+                      sold = {item?.sold}
+                      quantity = {item?.quantity}
+                      />
+                   
+                    )
+                  }
+                })
+              }
           </div>
       </Container>
       <Container class1="marquee-wrapper home-wrapper-2 py-5">
@@ -296,18 +378,19 @@ const Home = () => {
 
           </div>
           <div className="row">
-            <div className="col-3">
-              <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
+          {
+                                blogState && blogState?.map((item,index)=>{
+                                    if(index<3){
+                                      return(
+                                        <div className="col-3" key={index}>
+                                
+                                        <BlogCard id={item?._id} title={item?.title} description={item?.description} image={item?.images[0]?.url} date={moment(item?.createdAt).format("MMMM Do YYYY, h:mm a")}/>
+                                        </div>
+                                    )
+                                    }
+                                })
+                            }
+                     
           </div>
       </Container>
     </>

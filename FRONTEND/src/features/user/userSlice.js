@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authService } from "./userService";
+import  {authService}  from "./userService";
 import { toast } from 'react-toastify';
+
+
 
 export const registerUser = createAsyncThunk("auth/register",async(userData,thunkAPI)=>{
     try {
@@ -16,9 +18,18 @@ export const loginUser = createAsyncThunk("auth/login",async(userData,thunkAPI)=
         return thunkAPI.rejectWithValue(error)
     }
 })
+export const getUserProductWishlist = createAsyncThunk("user/wishlist",async(thunkAPI)=>{
+    try {
+        return await authService.getUserWishlist()
+    } catch (error) {       
+        return thunkAPI.rejectWithValue(error)        
+    }
+})
+
+const getCustomerfromLocalStorage = localStorage.getItem("customer") ? JSON.parse(localStorage.getItem("customer")) : null;
 
 const initialState = {
-    user : "",
+    user : getCustomerfromLocalStorage,
     isError : false,
     isSuccess : false,
     isLoading : false,
@@ -58,7 +69,7 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.user= action.payload;
+            state.user= action.payload;     
             if(state.isSuccess===true){
                 localStorage.setItem("token",action.payload.token)
                 toast.info("User Logged In Sucessfully")
@@ -72,6 +83,21 @@ export const authSlice = createSlice({
             if(state.isError===true){
                 toast.error(action.error)
             }
+        })
+        .addCase(getUserProductWishlist.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(getUserProductWishlist.fulfilled,(state,action)=>{
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.wishlist= action.payload;     
+        })
+        .addCase(getUserProductWishlist.rejected,(state,action)=>{
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
         })
     }
 })
