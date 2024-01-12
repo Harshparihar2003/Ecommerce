@@ -5,7 +5,7 @@ import ReactStars from "react-rating-stars-component";
 import ProductCard from '../components/ProductCard'
 import ReactImageZoom from "react-image-zoom"
 import Color from '../components/Color';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {TbGitCompare} from "react-icons/tb"
 import {AiOutlineHeart} from "react-icons/ai"
 import watch from "../images/watch.jpg"
@@ -13,19 +13,31 @@ import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAProduct } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
-import { addProductToCart } from '../features/user/userSlice';
+import { addProductToCart, getUserCart } from '../features/user/userSlice';
 
 const SingleProduct = () => {
   const [color, setColor] = useState(null)
   const [quantiy, setQuantiy] = useState(1);
-
+  const [alreadyAdded, setAlreadyAdded] = useState(false)
+  const navigate = useNavigate();
   const location = useLocation();
   const getProductId = location.pathname.split("/")[2]
   const dispatch = useDispatch();
   const productState = useSelector((state)=> state.product.singleProduct)
+  const cartState = useSelector((state) => state.auth.cartProducts)
+
   useEffect(()=>{
     dispatch(getAProduct(getProductId))
+    dispatch(getUserCart())
   },[])
+
+  useEffect(()=>{
+    for (let index = 0; index < cartState.length; index++) {
+      if(getProductId === cartState[index]?.productId?._id){
+        setAlreadyAdded(true)
+      }
+    }
+  })
 
   const uploadCart = () =>{
     if(color === null){
@@ -33,6 +45,7 @@ const SingleProduct = () => {
       return false;
     }else{
       dispatch(addProductToCart({productId : productState?._id, quantiy,color,price : productState?.price}))
+      navigate("/cart")
     }
   }
     const props = {
@@ -116,23 +129,33 @@ const SingleProduct = () => {
                               <span className="badge border border-1 bg-white text-dark border-secondary">XL</span>
                             </div>
                           </div>
-                          <div className='d-flex gap-10 flex-column  mt-2 mb-3'>
+                          {
+                            alreadyAdded === false && <>
+                               <div className='d-flex gap-10 flex-column  mt-2 mb-3'>
                             <h3 className='product-heading'>Color: </h3>
                             <Color setColor={setColor} colorData ={productState?.color}/>
                           </div>
+                            </>
+                          }
                           <div className='d-flex gap-15 align-items-center flex-row  mt-2 mb-3'>
-                            <h3 className='product-heading'>Quantity: </h3>
+                           {
+                            alreadyAdded === false && <>
+                               <h3 className='product-heading'>Quantity: </h3>
                             <div>
                               <input type="number" name="" className='form-control' style={{"width" : "70px"}} min={1} max={10} id=""
                               onChange={(e)=> setQuantiy(e.target.value)}
                               value={quantiy}
                               />
                             </div>
-                            <div className='d-flex align-items-center gap-30 ms-5'>
+                            </>
+                           }
+                            <div className={alreadyAdded ? "ms-0" : "ms-5" + "d-flex align-items-center gap-30"}>
                             <button className="button border-0"
-                            onClick={()=>{uploadCart()}}
-                            type='submit'
-                            >Add to Cart</button>
+                            onClick={()=>{alreadyAdded ? navigate("/cart") : uploadCart()}}
+                            type='button'
+                            >
+                              {alreadyAdded ? "Go to Cart" : "Add to Cart"}
+                              </button>
                                 <button className='button signup'>Buy it Now</button>
                             </div>
                           </div>

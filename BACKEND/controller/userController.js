@@ -371,6 +371,32 @@ const getUserCart = asyncHandler(async(req,res)=>{
     }
 });
 
+const removeProductFromCart = asyncHandler(async(req,res)=>{
+    const {_id} = req.user;
+    const {cartItemId} = req.params;
+    validateMongoDbId(_id);
+    try {
+        const deletedProduct = await Cart.deleteOne({userId : _id, _id : cartItemId})
+        res.json(deletedProduct)
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+const updateProductQuantityFromCart = asyncHandler(async(req,res)=>{
+    const {_id} = req.user;
+    const {cartItemId, newQuantity} = req.params;
+    validateMongoDbId(_id);
+    try {
+        const cartItem = await Cart.findOne({userId : _id, _id: cartItemId})
+        cartItem.quantity = newQuantity;
+        cartItem.save()
+    } catch (error) {
+        throw new Error(error);
+    }
+
+})
+
 const emptyCart = asyncHandler(async(req,res)=>{
     const {_id} = req.user;
     validateMongoDbId(_id);
@@ -497,4 +523,4 @@ const updateOrderStatus = asyncHandler(async(req,res)=>{
     }
 })
 
-module.exports = { createUser, loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart,emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus , getAllOrders,getOrderByUserId}; 
+module.exports = { createUser, loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart,emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus , getAllOrders,getOrderByUserId, removeProductFromCart , updateProductQuantityFromCart  }; 

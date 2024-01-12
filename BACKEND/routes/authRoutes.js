@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, getAllOrders, getOrderByUserId} = require("../controller/userController");
+const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, getAllOrders, getOrderByUserId, removeProductFromCart, updateProductQuantityFromCart} = require("../controller/userController");
 const {authMiddleware, isAdmin} = require("../middleware/authMiddleware");
 
 
@@ -25,6 +25,8 @@ router.get("/logout",logOut)
 
 router.get("/cart",authMiddleware, getUserCart)
 router.delete("/empty-cart",authMiddleware, emptyCart)
+router.delete("/delete-product-cart/:cartItemId",authMiddleware, removeProductFromCart)
+router.delete("/update-product-cart/:cartItemId/:newQuantity",authMiddleware, updateProductQuantityFromCart)
 router.get("/:id",authMiddleware,isAdmin, getAUser)
 router.get("/wishlist",authMiddleware, getWishList)
 
