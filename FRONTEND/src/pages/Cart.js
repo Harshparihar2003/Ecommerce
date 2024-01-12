@@ -11,10 +11,13 @@ import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/u
 const Cart = () => {
     const dispatch = useDispatch();
     const [productUpdateDetail, setProductUpdateDetail] = useState(null)
-    const userCartState = useSelector((state)=> state.auth.cartProducts)
+    const userCartState = useSelector((state)=> state.auth.cartProducts);
+    const [totalAmount, setTotalAmount] = useState(null)
+
     useEffect(()=>{
         dispatch(getUserCart())
     },[])
+
     const deleteACartProduct = (id) =>{
         dispatch(deleteCartProduct(id));
         setTimeout(()=>{
@@ -31,9 +34,13 @@ const Cart = () => {
       }
     },[productUpdateDetail])
 
-    const updateACartProduct = (productUpdateDetail) =>{
-     
-    }
+    useEffect(()=>{
+        let sum =0;
+        for (let index = 0; index < userCartState.length; index++) {
+            sum = sum + (Number(userCartState[index].quantity) * userCartState[index].price);
+            setTotalAmount(sum);
+        }
+    },[userCartState])
 
   return (
     <>
@@ -86,11 +93,14 @@ const Cart = () => {
                     <div className="col-12 py-2 mt-4">
                         <div className="d-flex justify-content-between align-items-baseline">
                         <Link to="/product" className='button'>Continue Shopping</Link>
-                        <div className='d-flex align-items-end flex-column'>
-                            <h4>SubTotal: $1000</h4>
-                            <p>Taxes and shipping calculated at checkout.</p>
-                            <Link to="/checkout" className='button'>Checkout</Link>
-                        </div>
+                            {
+                                (totalAmount !== null || totalAmount !== 0) && 
+                                <div className='d-flex align-items-end flex-column'>
+                                <h4>SubTotal: $ {totalAmount}</h4>
+                                <p>Taxes and shipping calculated at checkout.</p>
+                                <Link to="/checkout" className='button'>Checkout</Link>
+                            </div>
+                            }
                         </div>
                     </div>
                 </div>
