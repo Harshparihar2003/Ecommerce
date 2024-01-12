@@ -50,7 +50,7 @@ const deleteProduct = asyncHandler(async (req,res)=>{
 
 const getAProduct = asyncHandler(async (req,res)=>{
     try {
-        const findProduct = await Product.findById(req.params.id);
+        const findProduct = await Product.findById(req.params.id).populate("color")
         res.json(findProduct)
     } catch (error) {
         throw new Error(error);
