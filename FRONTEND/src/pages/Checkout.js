@@ -8,6 +8,9 @@ import Container from '../components/Container'
 import { useDispatch, useSelector } from 'react-redux';
 import {useFormik} from "formik";
 import * as yup from "yup"
+import axios from "axios"
+import { config } from '../utils/axiosConfig'
+import { createAnOrder } from '../features/user/userSlice'
 
 const shippingSchema = yup.object().shape({
     firstName: yup.string().required("First name is Required"),
@@ -24,6 +27,11 @@ const Checkout = () => {
     const [totalAmount, setTotalAmount] = useState(null)
     const cartState = useSelector(state => state.auth.cartProducts)
     const [shippingInfo, setShippingInfo] = useState(null)
+    const [paymentInfo, setPaymentInfo] = useState({
+        razorpayPaymentId : "",
+        razorpayOrderId : ""
+    })
+    const [cartProductState, setCartProductState] = useState([])
 
     useEffect(()=>{
         let sum =0;
@@ -47,8 +55,98 @@ const Checkout = () => {
         validationSchema : shippingSchema,
         onSubmit: values => {
             setShippingInfo(values)
+            setTimeout(() => {
+                checkOutHandler()
+            }, 300);
         },
       });
+
+    const loadScript = (src)=>{
+        return new Promise((resolve)=>{
+            const script = document.createElement("script")
+            script.src = src;
+            script.onload = () =>{
+                resolve(true);
+            }
+            script.onerror = () =>{
+                resolve(false)
+            }
+            document.body.appendChild(script)
+        })
+    }
+
+    useEffect(()=>{
+        let items = [];
+        for (let index = 0; index < cartState?.length; index++) {
+            items?.push({
+                product : cartState[index].productId._id,
+                quantity : cartState[index].quantity,
+                color : cartState[index].color._id,
+                price : cartState[index].price
+            })
+        }
+        setCartProductState(items)
+    },[])
+
+    const checkOutHandler = async () =>{
+        const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+        if(!res){
+            alert("Razorpay SDK failed to load");
+            return;
+        }
+        const result = await axios.post("http://localhost:5000/api/user/order/checkout", {amount : totalAmount + 5}, config)
+        if(!result){
+            alert("Something Went wrong")
+            return;
+        }
+
+        const {amount,id : order_id, currency} = result.data.order;
+        const options = {
+            key: "rzp_test_J8OBfe1Ey3R0v0", // Enter the Key ID generated from the Dashboard
+            amount: amount,
+            currency: currency,
+            name: "Developer's Corner",
+            description: "Test Transaction",
+            image: { logo },
+            order_id: order_id,
+            handler: async function (response) {
+                const data = {
+                    orderCreationId: order_id,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                };
+
+                const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data, config);
+
+                setPaymentInfo({
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                })
+
+                dispatch(createAnOrder({
+                    totalPrice : totalAmount,
+                    totalPriceAfterDiscount : totalAmount,
+                    orderItems : cartProductState,
+                    paymentInfo ,
+                    shippingInfo
+                }))
+            },
+            prefill: {
+                name: "Dev Corner",
+                email: "pariharharsh337@gmail.com",
+                contact: "9455321797",
+            },
+            notes: {
+                address: "Developer's Corner office",
+            },
+            theme: {
+                color: "#61dafb",
+            },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+    }
 
     return (
         <>
