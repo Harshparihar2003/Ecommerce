@@ -9,16 +9,16 @@ import cart from "../images/cart.svg"
 import { useDispatch, useSelector } from 'react-redux'
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const [totalAmount, setTotalAmount] = useState(null)
-  const cartState = useSelector((state) => state?.auth?.cartProducts)
-  useEffect(()=>{ 
-    let sum =0;
-    for (let index = 0; index < cartState.length; index++) {
-        sum = sum + (Number(cartState[index].quantity) * Number(cartState[index].price));
-        setTotalAmount(sum);
-    }
-  },[cartState])
+  // const dispatch = useDispatch();
+  // const [totalAmount, setTotalAmount] = useState(null)
+  // const cartState = useSelector((state) => state?.auth?.cartProducts)
+  // useEffect(()=>{ 
+  //   let sum =0;
+  //   for (let index = 0; index < cartState.length; index++) {
+  //       sum = sum + (Number(cartState[index].quantity) * Number(cartState[index].price));
+  //       setTotalAmount(sum);
+  //   }
+  // },[cartState])
 
   return (
     <>
@@ -79,8 +79,10 @@ const Header = () => {
                   <Link to="/cart" className='d-flex align-items-center gap-10 text-white'>
                     <img src={cart} alt="cart" />
                     <div className='d-flex flex-column gap-10'>
-                      <span className='badge bg-white text-dark'>{cartState?.length ? cartState?.length : 0}</span>
-                      <p className='mb-0'>$ {totalAmount ? totalAmount : 0}</p>
+                      {/* <span className='badge bg-white text-dark'>{cartState?.length ? cartState?.length : 0}</span> */}
+                      <span className='badge bg-white text-dark'>0</span>
+                      {/* <p className='mb-0'>$ {totalAmount ? totalAmount : 0}</p> */}
+                      <p className='mb-0'>$ 100</p>
                     </div>
                   </Link>
                 </div>
