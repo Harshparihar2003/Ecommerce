@@ -1,30 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, getAllOrders, getOrderByUserId, removeProductFromCart, updateProductQuantityFromCart} = require("../controller/userController");
+const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, createOrder, removeProductFromCart, updateProductQuantityFromCart} = require("../controller/userController");
 const {authMiddleware, isAdmin} = require("../middleware/authMiddleware");
 
 
 router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken)
 router.put("/reset-password/:token", resetPassword)
-router.put("/order/update-order/:id",authMiddleware, isAdmin, updateOrderStatus);
+// router.put("/order/update-order/:id",authMiddleware, isAdmin, updateOrderStatus);
 
 router.put("/password",authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
 router.post("/cart",authMiddleware, userCart);
-router.post("/cart/applycoupon",authMiddleware, applyCoupon);
-router.post("/cart/cash-order",authMiddleware, createOrder);
+// router.post("/cart/applycoupon",authMiddleware, applyCoupon);
+router.post("/cart/create-order",authMiddleware, createOrder);
 
 router.get("/getuser", getAllUser);
-router.get("/get-orders",authMiddleware, getOrders);
-router.get("/getallorders",authMiddleware,isAdmin, getAllOrders);
-router.post("/getorderbyuser/:id",authMiddleware,isAdmin, getOrderByUserId);
+// router.get("/get-orders",authMiddleware, getOrders);
+// router.get("/getallorders",authMiddleware,isAdmin, getAllOrders);
+// router.post("/getorderbyuser/:id",authMiddleware,isAdmin, getOrderByUserId);
 router.get("/refresh",handleRefershToken)
 router.get("/logout",logOut)
 
 router.get("/cart",authMiddleware, getUserCart)
-router.delete("/empty-cart",authMiddleware, emptyCart)
+// router.delete("/empty-cart",authMiddleware, emptyCart)
 router.delete("/delete-product-cart/:cartItemId",authMiddleware, removeProductFromCart)
 router.delete("/update-product-cart/:cartItemId/:newQuantity",authMiddleware, updateProductQuantityFromCart)
 router.get("/:id",authMiddleware,isAdmin, getAUser)
