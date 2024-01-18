@@ -2,8 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import  {authService}  from "./userService";
 import { toast } from 'react-toastify';
 
-
-
+const getCustomerfromLocalStorage = localStorage.getItem("customer") ? JSON.parse(localStorage.getItem("customer")) : null;
 export const registerUser = createAsyncThunk("auth/register",async(userData,thunkAPI)=>{
     try {
         return await authService.register(userData);
@@ -61,7 +60,6 @@ export const createAnOrder = createAsyncThunk("user/cart/create-order",async(ord
     }
 })
 
-const getCustomerfromLocalStorage = localStorage.getItem("customer") ? JSON.parse(localStorage.getItem("customer")) : null;
 
 const initialState = {
     user : getCustomerfromLocalStorage,

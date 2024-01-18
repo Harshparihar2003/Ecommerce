@@ -107,7 +107,6 @@ const Checkout = () => {
             currency: currency,
             name: "Developer's Corner",
             description: "Test Transaction",
-            image: { logo },
             order_id: order_id,
             handler: async function (response) {
                 const data = {

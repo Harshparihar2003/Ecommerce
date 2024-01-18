@@ -17,7 +17,7 @@ export const getAProduct = createAsyncThunk("product/getAProduct",async(id,thunk
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const addToWishlist = createAsyncThunk("product/wishist",async(prodId,thunkAPI)=>{
+export const addToWishlist = createAsyncThunk("product/wishlist",async(prodId,thunkAPI)=>{
     try {
         return await productService.addToWishlist(prodId);
     } catch (error) {
