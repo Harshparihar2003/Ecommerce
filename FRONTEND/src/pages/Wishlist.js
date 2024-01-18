@@ -6,16 +6,15 @@ import {useDispatch, useSelector} from "react-redux"
 import { getUserProductWishlist } from '../features/user/userSlice'
 import { addToWishlist } from '../features/products/productSlice'
 
-
 const Wishlist = () => {
     const dispatch = useDispatch();
+    const wishlistState = useSelector((state)=> state.auth.wishlist.wishlist)
     useEffect(()=>{
         getWishlistFromDb()
     },[])
     const getWishlistFromDb = () =>{
         dispatch(getUserProductWishlist())
     }
-    const wishlistState = useSelector((state)=> state.auth.wishlist.wishlist)
     const removeFromWishlist = (id) =>{
         dispatch(addToWishlist(id));
         setTimeout(()=>{
@@ -32,17 +31,17 @@ const Wishlist = () => {
                     wishlistState.length === 0 && <div className="text-center fs-3">No Data</div>
                 }
                 {
-                    wishlistState?.map((item,index)=>{
+                   wishlistState?.map((item,index)=>{
                         return(
-                            <div className="col-3" key={index}>
+                            <div key={index} className="col-3">
                             <div className="wishlist-card w-100 position-relative">
                                 <img onClick={()=> {removeFromWishlist(item?._id)}}
                                 src="images/cross.svg" 
                                 alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="wishlist-card-image bg-white">
                                     <img 
-                                    // src="images/watch.jpg"
-                                    src={item?.images[0].url ? item?.images[0].url : "images/watch.jpg"}
+                                    src="images/watch.jpg"
+                                    // src={item?.images[0].url ? item?.images[0].url : "images/watch.jpg"}
                                     className='img-fluid d-block mx-auto' width={150} alt="watch"/>
                                 </div>
                                 <div className="py-2 px-3">
@@ -51,10 +50,9 @@ const Wishlist = () => {
                                 </div>
                             </div>
                         </div>
-                        )
+                         )
                     })
                 }
-               
             </div>
         </Container>
     </>
