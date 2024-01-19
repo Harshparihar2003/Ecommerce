@@ -263,7 +263,7 @@ const Checkout = () => {
                                             <div key={index} className="d-flex gap-10 align-items-center mb-2">
                                             <div className='w-75 d-flex gap-10'>
                                                 <div className='w-25 position-relative'>
-                                                    <span className="badge bg-secondary text-white rounded-circle p-2 positio-absolute" style={{"top" : "-10px", "right" : "2px"}}>
+                                                    <span className="badge bg-secondary text-white rounded-circle p-2 position-absolute" style={{"top" : "-10px", "right" : "2px"}}>
                                                         {/* 1 */}
                                                         {item?.quantity}
                                                         </span>
