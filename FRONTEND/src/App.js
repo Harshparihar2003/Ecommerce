@@ -43,7 +43,7 @@ function App() {
           <Route path="wishlist" element={<Wishlist/>}/>
           <Route path="login" element={<Login/>}/>
           <Route path="forgot-password" element={<ForgotPassword/>}/>
-          <Route path="signup" element={<SignUp/>}/>
+          <Route path="signup" element={<OpenRoutes><SignUp/></OpenRoutes>}/>
           <Route path="reset-password" element={<ResetPassword/>}/>
           <Route path="privacy-policy" element={<PrivacyPolicy/>}/>
           <Route path="refund-policy" element={<RefundPolicy/>}/>
