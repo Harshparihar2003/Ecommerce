@@ -26,6 +26,7 @@ const Checkout = () => {
     const dispatch = useDispatch();
     const [totalAmount, setTotalAmount] = useState(null)
     const cartState = useSelector(state => state.auth.cartProducts)
+
     const [shippingInfo, setShippingInfo] = useState(null)
     const [paymentInfo, setPaymentInfo] = useState({
         razorpayPaymentId : "",
@@ -35,7 +36,7 @@ const Checkout = () => {
 
     useEffect(()=>{
         let sum =0;
-        for (let index = 0; index < cartState.length; index++) {
+        for (let index = 0; index < cartState?.length; index++) {
             sum = sum + (Number(cartState[index].quantity) * cartState[index].price);
             setTotalAmount(sum);
         }
@@ -57,7 +58,7 @@ const Checkout = () => {
             setShippingInfo(values)
             setTimeout(() => {
                 checkOutHandler()
-            }, 300);
+            }, 500);
         },
       });
 
@@ -264,7 +265,6 @@ const Checkout = () => {
                                             <div className='w-75 d-flex gap-10'>
                                                 <div className='w-25 position-relative'>
                                                     <span className="badge bg-secondary text-white rounded-circle p-2 position-absolute" style={{"top" : "-10px", "right" : "2px"}}>
-                                                        {/* 1 */}
                                                         {item?.quantity}
                                                         </span>
                                                     <img width={100} height={100} src={item?.productId?.images[0]?.url} alt="" /></div>

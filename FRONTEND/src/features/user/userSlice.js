@@ -209,27 +209,27 @@ export const authSlice = createSlice({
                 toast.error("Something Went Wrong")
             } 
         })
-        // .addCase(createAnOrder.pending,(state)=>{
-        //     state.isLoading = true
-        // })
-        // .addCase(createAnOrder.fulfilled,(state,action)=>{
-        //     state.isLoading = false;
-        //     state.isError = false;
-        //     state.isSuccess = true;
-        //     state.orderedProduct= action.payload;
-        //     if(state.isSuccess){
-        //         toast.success("Ordered Successfully")
-        //     }   
-        // })
-        // .addCase(createAnOrder.rejected,(state,action)=>{
-        //     state.isLoading = false;
-        //     state.isError = true;
-        //     state.isSuccess = false;
-        //     state.message = action.error;
-        //     if(state.isSuccess === false){
-        //         toast.error("Something Went Wrong")
-        //     } 
-        // })
+        .addCase(createAnOrder.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(createAnOrder.fulfilled,(state,action)=>{
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.orderedProduct= action.payload;
+            if(state.isSuccess){
+                toast.success("Ordered Successfully")
+            }   
+        })
+        .addCase(createAnOrder.rejected,(state,action)=>{
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+            if(state.isSuccess === false){
+                toast.error("Something Went Wrong")
+            } 
+        })
     }
 })
 
