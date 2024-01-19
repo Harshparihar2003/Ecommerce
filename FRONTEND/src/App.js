@@ -23,6 +23,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import { PrivateRoutes } from './routing/PrivateRoutes';
 import { OpenRoutes } from './routing/OpenRoutes';
+import Orders from './pages/Orders';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="blogs" element={<Blogs/>}/>
           <Route path="blog/:id" element={<SingleBlog/>}/>
           <Route path="cart" element={<Cart/>}/>
+          <Route path="my-orders" element={<Orders/>}/>
           <Route path="checkout" element={<Checkout/>}/>
           <Route path="compare-product" element={<CompareProduct/>}/>
           <Route path="wishlist" element={<Wishlist/>}/>
