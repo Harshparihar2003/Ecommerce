@@ -21,8 +21,8 @@ router.post("/order/paymentVerification",authMiddleware, paymentVerification)
 // router.post("/cart/applycoupon",authMiddleware, applyCoupon);
 router.post("/cart/create-order",authMiddleware, createOrder);
 
-router.get("/getuser", getAllUser);
 router.get("/wishlist",authMiddleware, getWishList)
+router.get("/getuser", getAllUser);
 // router.get("/get-orders",authMiddleware, getOrders);
 // router.get("/getallorders",authMiddleware,isAdmin, getAllOrders);
 // router.post("/getorderbyuser/:id",authMiddleware,isAdmin, getOrderByUserId);

@@ -315,7 +315,10 @@ const addToWish = (id) =>{
                 productState && productState?.map((item,index)=>{
                   if(item.tags === "special"){
                     return(
-                      <SpecialProducts  key={index} id={item?._id} title={item?.title}
+                      <SpecialProducts  
+                      key={index} 
+                      id={item?._id} 
+                      title={item?.title}
                       brand = {item?.brand}
                       totalrating = {item?.totalrating}
                       price = {item?.price}

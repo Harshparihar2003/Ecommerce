@@ -3,7 +3,7 @@ import BreadCrumb from '../components/BreadCrumb'
 import Meta from '../components/Meta'
 import ReactStars from "react-rating-stars-component";
 import ProductCard from '../components/ProductCard'
-import ReactImageZoom from "react-image-zoom"
+import ReactImageZoom from 'react-image-zoom';
 import Color from '../components/Color';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {TbGitCompare} from "react-icons/tb"
@@ -17,14 +17,18 @@ import { addProductToCart, getUserCart } from '../features/user/userSlice';
 
 const SingleProduct = () => {
   const [color, setColor] = useState(null)
-  const [quantiy, setQuantiy] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+
   const [alreadyAdded, setAlreadyAdded] = useState(false)
   const navigate = useNavigate();
   const location = useLocation();
   const getProductId = location.pathname.split("/")[2]
+
   const dispatch = useDispatch();
   const productState = useSelector((state)=> state.product.singleProduct)
+  console.log("Product State",productState);
   const cartState = useSelector((state) => state.auth.cartProducts)
+  console.log("Cart" , cartState);
 
   useEffect(()=>{
     dispatch(getAProduct(getProductId))
@@ -32,7 +36,7 @@ const SingleProduct = () => {
   },[])
 
   useEffect(()=>{
-    for (let index = 0; index < cartState.length; index++) {
+    for (let index = 0; index < cartState?.length; index++) {
       if(getProductId === cartState[index]?.productId?._id){
         setAlreadyAdded(true)
       }
@@ -44,7 +48,7 @@ const SingleProduct = () => {
       toast.error("Please choose color")
       return false;
     }else{
-      dispatch(addProductToCart({productId : productState?._id, quantiy,color,price : productState?.price}))
+      dispatch(addProductToCart({productId : productState?._id, quantity,color,price : productState?.price}))
       navigate("/cart")
     }
   }
@@ -80,9 +84,10 @@ const SingleProduct = () => {
                     {
                       productState?.images.map((item,index)=>{
                         return(
-                          <div><img
-                           src={item?.url}
-                          //  src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg"
+                          <div key={index}>
+                            <img
+                          //  src={item?.url}
+                           src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg"
                            alt="" className='img-fluid' /></div>
                         )
                       })
@@ -99,7 +104,9 @@ const SingleProduct = () => {
                     <div className="border-bottom py-3">
                       <p className="price">$ {productState?.price}</p>
                       <div className="d-flex align-items-center gap-10">
-                      <ReactStars count={5} size={24} value={productState?.totalrating}activeColor="#ffd700" edit={false}/>
+                      <ReactStars count={5} size={24}
+                       value={productState?.totalrating}
+                       activeColor="#ffd700" edit={false}/>
                             <p className='mb-0 t-review'>(2 Reviews)</p>
                       </div>
                       <a className='review-btn' href="#review">Write a Review</a>
@@ -109,13 +116,19 @@ const SingleProduct = () => {
                             <h3 className='product-heading'>Type: </h3><p className='product-data'>Watch</p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Brand: </h3><p className='product-data'>{productState?.brand}</p>
+                            <h3 className='product-heading'>Brand: </h3><p className='product-data'>
+                              {productState?.brand}
+                              </p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Category: </h3><p className='product-data'>{productState?.category}</p>
+                            <h3 className='product-heading'>Category: </h3><p className='product-data'>
+                              {productState?.category}
+                              </p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
-                            <h3 className='product-heading'>Tags: </h3><p className='product-data'>{productState?.tags}</p>
+                            <h3 className='product-heading'>Tags: </h3><p className='product-data'>
+                              {productState?.tags}
+                              </p>
                           </div>
                           <div className='d-flex gap-10 align-items-center my-2'>
                             <h3 className='product-heading'>Availability: </h3><p className='product-data'>In Stock</p>
@@ -143,20 +156,20 @@ const SingleProduct = () => {
                                <h3 className='product-heading'>Quantity: </h3>
                             <div>
                               <input type="number" name="" className='form-control' style={{"width" : "70px"}} min={1} max={10} id=""
-                              onChange={(e)=> setQuantiy(e.target.value)}
-                              value={quantiy}
+                              onChange={(e)=> setQuantity(e.target.value)}
+                              value={quantity}
                               />
                             </div>
                             </>
                            }
-                            <div className={alreadyAdded ? "ms-0" : "ms-5" + "d-flex align-items-center gap-30"}>
+                            <div className={ alreadyAdded ?"ms-0" : "ms-5" + "d-flex align-items-center gap-30"}>
                             <button className="button border-0"
                             onClick={()=>{alreadyAdded ? navigate("/cart") : uploadCart()}}
                             type='button'
                             >
                               {alreadyAdded ? "Go to Cart" : "Add to Cart"}
                               </button>
-                                <button className='button signup'>Buy it Now</button>
+                                {/* <button className='button signup'>Buy it Now</button> */}
                             </div>
                           </div>
                           <div className='d-flex align-items-center gap-15'>
@@ -212,11 +225,11 @@ const SingleProduct = () => {
                             <p className='mb-0'>Based on 2 Reviews</p>
                             </div>
                         </div>
-                       {
+                       {/* {
                         orderedProduct &&  (<div>
                         <a className='text-dark text-decoration-underline' href="">Write a review</a>
                     </div>
-                       )}
+                       )} */}
                     </div>
                     <div className="review-form py-4">
                       <h4>Write a Review</h4>
