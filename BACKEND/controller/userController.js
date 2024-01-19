@@ -169,9 +169,13 @@ const updateUser = asyncHandler(async (req, res) => {
     const {_id } = req.user;
     validateMongoDbId(_id)
     try {
-        const updateUser = await User.findByIdAndUpdate(_id, req.body, {
+        const updateUser = await User.findByIdAndUpdate(_id,{
+            firstname : req?.body?.firstname,
+            lastname : req?.body?.lastname,
+            email : req?.body?.email,
+            mobile : req?.body?.mobile
+        }, {
             new: true,
-            runValidators: true,
         });
       res.json(updateUser)
     } catch (error) {

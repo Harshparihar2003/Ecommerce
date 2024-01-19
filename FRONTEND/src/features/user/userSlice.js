@@ -67,6 +67,13 @@ export const createAnOrder = createAsyncThunk("user/cart/create-order",async(ord
         return thunkAPI.rejectWithValue(error)        
     }
 })
+export const updateProfile = createAsyncThunk("user/profile/update",async(data,thunkAPI)=>{
+    try {
+        return await authService.updateUser(data)
+    } catch (error) {       
+        return thunkAPI.rejectWithValue(error)        
+    }
+})
 
 
 const initialState = {
@@ -247,6 +254,24 @@ export const authSlice = createSlice({
             state.getorderedProduct= action.payload;  
         })
         .addCase(getOrders.rejected,(state,action)=>{
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error; 
+        })
+        .addCase(updateProfile.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(updateProfile.fulfilled,(state,action)=>{
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.updatedUser= action.payload;  
+            if(state.isSuccess){
+                toast.success("Profile Updated Successfully")
+            } 
+        })
+        .addCase(updateProfile.rejected,(state,action)=>{
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
