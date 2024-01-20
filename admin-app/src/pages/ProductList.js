@@ -46,15 +46,16 @@ const ProductList = () => {
   useEffect(()=>{
     dispatch(getProducts())
   },[])
-  const productState = useSelector((state)=>state.product.products);
+  const productState = useSelector((state)=>state?.product?.products);
   const data1 = [];
-  for (let i = 0; i < productState.length; i++) {
+  console.log(productState);
+  for (let i = 0; i < productState?.length; i++) {
     data1.push({
       key: i + 1,
       title: productState[i].title,
       brand: productState[i].brand,
       category: productState[i].category,
-      color: productState[i].color.color,
+      color: productState[i].color,
       price: `${productState[i].price}`,
       action: (
       <div>

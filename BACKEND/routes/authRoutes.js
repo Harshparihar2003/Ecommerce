@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, createOrder, removeProductFromCart, updateProductQuantityFromCart, getMyOrders} = require("../controller/userController");
+const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, createOrder, removeProductFromCart, updateProductQuantityFromCart, getMyOrders, getMonthWiseOrderIncome, getMonthWiseOrderCount, getYearlyTotalOrders} = require("../controller/userController");
 const {authMiddleware, isAdmin} = require("../middleware/authMiddleware");
 const { checkout, paymentVerification } = require("../controller/paymentController");
 
@@ -19,9 +19,14 @@ router.post("/order/checkout", authMiddleware, checkout)
 router.post("/order/paymentVerification",authMiddleware, paymentVerification)
 
 // router.post("/cart/applycoupon",authMiddleware, applyCoupon);
+router.get("/getMonthWiseOrderIncome",authMiddleware, getMonthWiseOrderIncome)
+router.get("/getYearlyTotalOrders",authMiddleware, getYearlyTotalOrders)
+
 router.post("/cart/create-order",authMiddleware, createOrder);
 
+
 router.get("/wishlist",authMiddleware, getWishList)
+
 router.get("/getuser", getAllUser);
 // router.get("/get-orders",authMiddleware, getOrders);
 router.get("/getmyorders",authMiddleware, getMyOrders);
