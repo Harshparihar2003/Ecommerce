@@ -11,7 +11,7 @@ import {AiOutlineHeart} from "react-icons/ai"
 import watch from "../images/watch.jpg"
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAProduct } from '../features/products/productSlice';
+import { addRating, getAProduct, getAllProducts } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
 import { addProductToCart, getUserCart } from '../features/user/userSlice';
 
@@ -25,14 +25,16 @@ const SingleProduct = () => {
   const getProductId = location.pathname.split("/")[2]
 
   const dispatch = useDispatch();
-  const productState = useSelector((state)=> state.product.singleProduct)
-  console.log("Product State",productState);
-  const cartState = useSelector((state) => state.auth.cartProducts)
-  console.log("Cart" , cartState);
+  const productState = useSelector((state)=> state?.product?.singleProduct)
+  const productsState = useSelector((state)=> state?.product?.product)
+
+  const cartState = useSelector((state) => state?.auth?.cartProducts)
+
 
   useEffect(()=>{
     dispatch(getAProduct(getProductId))
     dispatch(getUserCart())
+    dispatch(getAllProducts())
   },[])
 
   useEffect(()=>{
@@ -68,10 +70,41 @@ const SingleProduct = () => {
       document.execCommand('copy')
       textField.remove()
     }
+    
+    const [popularProduct, setPopularProduct] = useState([])
+    useEffect(()=>{
+      let data = [];
+      for (let index = 0; index < productsState.length; index++) {
+        const element = productsState[index];
+        if(element.tags === "popular"){
+          data.push(element)
+        }
+        setPopularProduct(data)
+      }
+    },[productsState])
+
+    const [star, setStar] = useState(null)
+    const [comment, setComment] = useState(null)
+    const addRatingToProduct = () =>{
+      if(star === null){
+        toast.error("Please add star rating")
+        return false
+      }
+      else if(comment === null){
+        toast.error("Please write review about the product")
+        return false
+      }
+      else{
+        dispatch(addRating({star : star , comment : comment, prodId :getProductId}))
+        setTimeout(()=>{
+          dispatch(getAProduct(getProductId))
+        },100)
+      }
+    }
   return (
     <>
     <Meta title={"Product Name"} />
-    <BreadCrumb title={"Product Name"} />
+    <BreadCrumb title={productState?.title} />
     <Container class1="main-product-wrapper py-5 home-wrapper-2">
             <div className="row">
                 <div className="col-6">
@@ -233,28 +266,33 @@ const SingleProduct = () => {
                     </div>
                     <div className="review-form py-4">
                       <h4>Write a Review</h4>
-                    <form action="" className='d-flex flex-column gap-15'>
+                   
                       <div>
-                      <ReactStars count={5} size={24} value={3}activeColor="#ffd700" edit={true}/>
+                      <ReactStars count={5} size={24} value={3}activeColor="#ffd700" edit={true} onChange={(e)=> setStar(e)}/>
                       </div>
                       <div>
-                        <textarea name="" placeholder='Comments' className='w-100 form-control' id="" cols="30" rows="4"></textarea>
+                        <textarea name="" placeholder='Comments' className='w-100 form-control' id="" cols="30" rows="4" onChange={(e)=> setComment(e.target.value)}></textarea>
                       </div>
-                      <div className='d-flex justify-content-end'>
-                        <button className="button border-0">Submit Review</button>
+                      <div className='d-flex justify-content-end mt-3'>
+                        <button className="button border-0" onClick={addRatingToProduct} type='button'>Submit Review</button>
                       </div>
-                    </form>
+    
                     </div>
                     <div className="reviews mt-4">
-                      <div className="review">
+                     {
+                      productState && productState?.ratings?.map((i,index)=>{
+                        return (
+                          <div key={index} className="review">
                           <div className='d-flex gap-10 align-items-center'>
-                            <h6 className='mb-0'>Pushkar</h6>
-                            <ReactStars count={5} size={24} value={3}activeColor="#ffd700" edit={false}/>
+                            <ReactStars count={5} size={24} value={i?.star}activeColor="#ffd700" edit={false}/>
                           </div>
                       <p className='mt-3'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem pariatur doloribus rem iure perferendis excepturi, ex laboriosam nesciunt illo soluta, maiores libero? Deserunt blanditiis deleniti animi non quis fugit voluptatibus!
+                          {i?.comment}
                       </p>
                       </div>
+                        )
+                      })
+                     }
                     </div>
                     </div>
                 </div>
@@ -269,7 +307,7 @@ const SingleProduct = () => {
               </div>
             </div>
               <div className="row">
-              <ProductCard/>
+              <ProductCard data={popularProduct}/>
               </div>
       </Container>
     </>

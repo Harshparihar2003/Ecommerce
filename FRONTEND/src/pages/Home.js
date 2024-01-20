@@ -243,9 +243,9 @@ const addToWish = (id) =>{
                     </div>
                     <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
-                            <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
+                            {/* <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button> */}
                             <button  className='border-0 bg-transparent'><img onClick={()=>navigate("/product/" + item?._id)} src={view} alt="view" /></button>
-                            <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
+                            {/* <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button> */}
                         </div>
                     </div>
                 </div>
@@ -289,9 +289,9 @@ const addToWish = (id) =>{
                     </div>
                     <div className="action-bar position-absolute">
                         <div className="d-flex flex-column gap-15">
-                            <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button>
+                            {/* <button  className='border-0 bg-transparent'><img src={prodcompare} alt="Product compare" /></button> */}
                             <button  className='border-0 bg-transparent'><img onClick={()=>navigate("/product/" + item?._id)} src={view} alt="view" /></button>
-                            <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button>
+                            {/* <button  className='border-0 bg-transparent'><img src={addcart} alt="add-cart" /></button> */}
                         </div>
                     </div>
                 </div>

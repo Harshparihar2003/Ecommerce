@@ -9,6 +9,7 @@ import cart from "../images/cart.svg"
 import { useDispatch, useSelector } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { getAProduct } from '../features/products/productSlice'
 
 const Header = () => {
   const authState = useSelector(state => state?.auth)
@@ -70,7 +71,10 @@ const Header = () => {
             <Typeahead
         id="pagination-example"
         onPaginate={() => console.log('Results paginated')}
-        onChange={(selected)=> navigate(`/product/${selected[0].prod}`)}
+        onChange={(selected)=> {
+          navigate(`/product/${selected[0]?.prod}`)
+          dispatch(getAProduct(selected[0]?.prod))
+        }}
         options={productOpt}
         paginate={paginate}
         labelKey={"name"}
@@ -83,12 +87,12 @@ const Header = () => {
             <div className="col-5">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
                 <div>
-                  <Link to="compare-product" className='d-flex align-items-center gap-10 text-white'>
+                  {/* <Link to="compare-product" className='d-flex align-items-center gap-10 text-white'>
                     <img src={compare} alt="compare" srcset="" />
                     <p className='mb-0'>
                       Compare <br /> Products
                     </p>
-                  </Link>
+                  </Link> */}
                 </div>
                 <div>
                   <Link to="/wishlist" className='d-flex align-items-center gap-10 text-white'>
