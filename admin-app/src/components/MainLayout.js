@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AiOutlineDashboard, AiOutlineShoppingCart, AiOutlineUser, AiOutlineBgColors } from "react-icons/ai"
+import { AiOutlineDashboard, AiOutlineShoppingCart, AiOutlineUser, AiOutlineBgColors, AiOutlineLogout } from "react-icons/ai"
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -39,8 +39,9 @@ const MainLayout = () => {
           mode="inline"
           defaultSelectedKeys={[]}
           onClick={({ key }) => {
-            if (key == "signout") {
-
+            if (key === "signout") {
+                localStorage.clear()
+                window.location.reload()
             } else {
               navigate(key)
             }
@@ -171,8 +172,13 @@ const MainLayout = () => {
             },
              {
               key: 'enquiries',
-              icon: <FaBloggerB className='fs-4' />,
+              icon: <FaClipboardList className='fs-4' />,
               label: 'Enquiries'
+            },
+             {
+              key: 'signout',
+              icon: <AiOutlineLogout className='fs-4' />,
+              label: 'Sign Out'
             }
           ]}
         />

@@ -19,6 +19,7 @@ const ResetPassword = () => {
     const location = useLocation()
     const getToken = location.pathname.split("/")[2];
     console.log(getToken);
+    console.log("Reset");
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const formik = useFormik({

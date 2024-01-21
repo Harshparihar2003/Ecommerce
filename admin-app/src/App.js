@@ -1,10 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from "./pages/Login"
-import ForgotPassword from './pages/ForgotPassword';
 import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
-import ResetPassword from './pages/ResetPassword';
 import Enquiries from './pages/Enquiries';
 import BlogList from './pages/BlogList';
 import BlogCatlist from './pages/BlogCatlist';
@@ -24,6 +22,8 @@ import Couponlist from './pages/Couponlist';
 import AddCoupon from './pages/AddCoupon';
 import ViewEnq from './pages/ViewEnq';
 import ViewOrder from './pages/ViewOrder';
+import { PrivateRoutes } from './routing/PrivateRoutes';
+import { OpenRoutes } from './routing/OpenRoutes';
 
 function App() {
   return (
@@ -31,9 +31,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Login/>} />
-          <Route path='/reset-password' element={<ResetPassword/>} />
-          <Route path='/forgot-password' element={<ForgotPassword/>} />
-          <Route path='/admin' element={<MainLayout/>}>
+          <Route path='/admin' element={<PrivateRoutes><MainLayout/></PrivateRoutes>}>
               <Route index element={<Dashboard/>}></Route>
               <Route path='enquiries' element={<Enquiries/>}></Route>
               <Route path='enquiries/:id' element={<ViewEnq/>}></Route>

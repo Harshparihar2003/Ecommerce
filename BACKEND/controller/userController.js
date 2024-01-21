@@ -412,6 +412,40 @@ const getMyOrders = asyncHandler(async(req,res)=>{
         throw new Error(error)
     }
 })
+const getAllOrders = asyncHandler(async(req,res)=>{
+       try {
+        const orders = await Order.find().populate("user")
+        res.json({
+            orders
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+const getSingleOrder = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+       try {
+        const orders = await Order.findOne({_id : id}).populate("orderItems.product").populate("orderItems.color")
+        res.json({
+            orders
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+const updateOrder = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+       try {
+        const orders = await Order.findById(id)
+        orders.orderStatus = req.body.status;
+        await orders.save()
+        res.json({
+            orders
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
+})
 
 // const emptyCart = asyncHandler(async(req,res)=>{
 //     const {_id} = req.user;
@@ -502,8 +536,8 @@ const getYearlyTotalOrders = asyncHandler(async(req,res)=>{
             }
         },{
             $group : {
-                _id : null
-                ,count : {$sum : "$_id"},
+                _id : null,
+                count : {$sum : 1},
                 amount : {$sum : "$totalPriceAfterDiscount"}
             }
         }
@@ -616,6 +650,6 @@ module.exports = { createUser, loginUserCtrl, getAllUser, getAUser, deleteAUser,
      createOrder,
     //   getOrders, 
     //   updateOrderStatus ,
-    //    getAllOrders,
+       getAllOrders,
     //    getOrderByUserId,
-       removeProductFromCart , updateProductQuantityFromCart, getMyOrders, getMonthWiseOrderIncome,getYearlyTotalOrders}; 
+       removeProductFromCart , updateProductQuantityFromCart, getMyOrders, getMonthWiseOrderIncome,getYearlyTotalOrders,getSingleOrder,updateOrder}; 

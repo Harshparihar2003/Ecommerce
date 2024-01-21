@@ -35,7 +35,7 @@ const Customers = () => {
    if(customerState[i].roll!== "admin"){
     data1.push({
       key: i + 1,
-      name: customerState[i].firstName + " " + customerState[i].lastName,
+      name: customerState[i].firstname + " " + customerState[i].lastname,
       email: customerState[i].email,
       status: customerState[i].mobile,
     });

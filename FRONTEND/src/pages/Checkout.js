@@ -58,7 +58,7 @@ const Checkout = () => {
             setShippingInfo(values)
             setTimeout(() => {
                 checkOutHandler()
-            }, 500);
+            }, 800);
         },
       });
 
