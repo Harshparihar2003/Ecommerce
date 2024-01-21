@@ -5,8 +5,10 @@ import Container from '../components/Container'
 import CustomInput from '../components/CustomInput'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../features/user/userSlice'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const signUpSchema = yup.object().shape({
     firstname: yup.string().required("First name is required"),
@@ -17,6 +19,8 @@ const signUpSchema = yup.object().shape({
   });
 
 const SignUp = () => {
+    const authState = useSelector((state)=> state?.auth)
+    const navigate= useNavigate()
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
@@ -31,6 +35,11 @@ const SignUp = () => {
           dispatch(registerUser(values))
         },
       });
+      useEffect(()=>{
+        if(authState.createdUser !== null && authState.isError === false){
+            navigate("/login")
+        }
+      },[authState])
   return (
     <>  
     <Meta title="Sign Up" />
@@ -45,7 +54,7 @@ const SignUp = () => {
                         <div className="error" style={{ color: 'red' }}>
                             {formik.touched.firstname && formik.errors.firstname}
                         </div>
-                        <CustomInput type="text" name='lastname' placeholder="Last Name" value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}/>
+                        <CustomInput type="text" name='lastname' placeholder="Last Name" value={formik.values.lastname} onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}/>     
                         <div className="error" style={{ color: 'red' }}>
                             {
                                 formik.touched.lastname && formik.errors.lastname
