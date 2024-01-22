@@ -31,8 +31,8 @@ const addToCart = async (cartData) =>{
         return response.data
     }
 }
-const getCart = async () =>{
-    const response = await axios.get(`${base_url}user/cart`, config);
+const getCart = async (data) =>{
+    const response = await axios.get(`${base_url}user/cart`, data);
     if(response.data){
         return response.data
     }
@@ -75,6 +75,13 @@ const forgotPassToken = async(data) =>{
 }
 const resetPass = async(data) =>{
     const response = await axios.put(`${base_url}user/reset-password/${data.token}`,{password : data?.password});
+    console.log(response);
+    if(response.data){
+        return response.data
+    }
+}
+const emptyCart = async(data) =>{
+    const response = await axios.delete(`${base_url}user/empty-cart`,config);
     if(response.data){
         return response.data
     }
@@ -92,5 +99,6 @@ export const authService = {
     getUserOrders,
     updateUser,
     forgotPassToken,
-    resetPass
+    resetPass,
+    emptyCart
 }

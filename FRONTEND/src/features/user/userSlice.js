@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import  {authService}  from "./userService";
 import { toast } from 'react-toastify';
 
@@ -39,9 +39,9 @@ export const getOrders = createAsyncThunk("user/order/get",async(thunkAPI)=>{
         return thunkAPI.rejectWithValue(error)        
     }
 })
-export const getUserCart = createAsyncThunk("user/cart/get",async(thunkAPI)=>{
+export const getUserCart = createAsyncThunk("user/cart/get",async(data,thunkAPI)=>{
     try {
-        return await authService.getCart()
+        return await authService.getCart(data)
     } catch (error) {       
         return thunkAPI.rejectWithValue(error)        
     }
@@ -88,7 +88,15 @@ export const resetPassword = createAsyncThunk("user/password/reset",async(data,t
         return thunkAPI.rejectWithValue(error)        
     }
 })
+export const deleteUserCart = createAsyncThunk("user/cart/delete",async(thunkAPI)=>{
+    try {
+        return await authService.emptyCart()
+    } catch (error) {       
+        return thunkAPI.rejectWithValue(error)        
+    }
+})
 
+export const resetState = createAction("Reset_all")
 
 const initialState = {
     user : getCustomerfromLocalStorage,
@@ -338,6 +346,22 @@ export const authSlice = createSlice({
             state.isSuccess = false;
             state.message = action.error; 
         })
+        .addCase(deleteUserCart.pending,(state)=>{
+            state.isLoading = true
+        })
+        .addCase(deleteUserCart.fulfilled,(state,action)=>{
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.deletedCart= action.payload; 
+        })
+        .addCase(deleteUserCart.rejected,(state,action)=>{
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error; 
+        })
+        .addCase(resetState,()=> initialState)
     }
 })
 

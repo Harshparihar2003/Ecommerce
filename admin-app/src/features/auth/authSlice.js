@@ -19,24 +19,24 @@ export const login = createAsyncThunk("auth/login", async(userData,thunkAPI) => 
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const getMonthlyData = createAsyncThunk("orders/monthlydata", async(userData,thunkAPI) => {
+export const getMonthlyData = createAsyncThunk("orders/monthlydata", async(data,thunkAPI) => {
     try {
-        return await authService.getMonthlyOrders()
+        return await authService.getMonthlyOrders(data)
     } catch (error) {
         return thunkAPI.rejectWithValue(error)
     }
 })
-export const getYearlyData = createAsyncThunk("orders/yearlydata", async(userData,thunkAPI) => {
+export const getYearlyData = createAsyncThunk("orders/yearlydata", async(data,thunkAPI) => {
     try {
-        return await authService.getYearlyStats()
+        return await authService.getYearlyStats(data)
     } catch (error) {
         return thunkAPI.rejectWithValue(error)
     }
 })
 
-export const getOrders = createAsyncThunk("order/get-orders", async(thunkAPI) => {
+export const getOrders = createAsyncThunk("order/get-orders", async(data,thunkAPI) => {
     try {
-        return await authService.getOrders()
+        return await authService.getOrders(data)
     } catch (error) {
         return thunkAPI.rejectWithValue(error)    
     }

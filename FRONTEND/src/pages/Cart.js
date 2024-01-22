@@ -9,19 +9,33 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/user/userSlice'
 
 const Cart = () => {
+
+    const getTokenFromLocalStorage = localStorage.getItem("customer")
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
+  
+   const config2 = {
+    headers: {
+      Authorization: `Bearer ${
+        getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+      }`,
+      Accept: "application/json",
+    },
+  };
+
     const dispatch = useDispatch();
     const [productUpdateDetail, setProductUpdateDetail] = useState(null)
     const userCartState = useSelector((state)=> state.auth.cartProducts);
     const [totalAmount, setTotalAmount] = useState(null)
 
     useEffect(()=>{
-        dispatch(getUserCart())
+        dispatch(getUserCart(config2))
     },[])
 
     const deleteACartProduct = (id) =>{
         dispatch(deleteCartProduct(id));
         setTimeout(()=>{
-            dispatch(getUserCart())
+            dispatch(getUserCart(config2))
         },200)
     }
 
@@ -29,7 +43,7 @@ const Cart = () => {
       if(productUpdateDetail!==null){
         dispatch(updateCartProduct({cartItemId : productUpdateDetail?.cartItemId, quantity : productUpdateDetail?.quantity}))
         setTimeout(()=>{
-            dispatch(getUserCart())
+            dispatch(getUserCart(config2))
         },200)
       }
     },[productUpdateDetail])
@@ -62,10 +76,10 @@ const Cart = () => {
                                     <div className='gap-15 cart-col-1 d-flex align-items-center'>
                                          <div className='w-25'><img src={watch} className='img-fluid' alt="product image" /></div>
                                          <div className='w-75'>
-                                             <p>{item?.productId.title}</p>
+                                             <p>{item?.productId?.title}</p>
                                              
                                              <p className='d-flex gap-3'>Color: <ul className="colors ps-0">
-                                                    <li style={{backgroundColor : item?.color.title}}>
+                                                    <li style={{backgroundColor : item?.color?.title}}>
                                                     </li>
                                                 </ul> </p>
                                          </div>
@@ -74,7 +88,7 @@ const Cart = () => {
                                      <h5 className="price">$ {item?.price}</h5>
                                     </div>
                                     <div className='cart-col-3 d-flex align-items-center gap-15'>
-                                     <div><input className='form-control' type="number" min={1} max={10} name="" id="" value={productUpdateDetail?.quantity ? productUpdateDetail?.quantity : item?.quantity} 
+                                     <div><input className='form-control' type="number" min={1} max={10} name="quantity" id={"cart" + item?._id} value={item?.quantity} 
                                         onChange={(e)=>{setProductUpdateDetail({cartItemId : item?._id, quantity : e.target.value})}}
                                      /></div>
                                      <div>

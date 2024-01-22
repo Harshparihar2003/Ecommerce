@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, createOrder, removeProductFromCart, updateProductQuantityFromCart, getMyOrders, getMonthWiseOrderIncome, getMonthWiseOrderCount, getYearlyTotalOrders, getAllOrders, getSingleOrder, updateOrder} = require("../controller/userController");
+const {createUser , loginUserCtrl, getAllUser, getAUser, deleteAUser, updateUser, blockUser, unblockUser, handleRefershToken, logOut, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishList, saveAddress, userCart, getUserCart, createOrder, removeProductFromCart, updateProductQuantityFromCart, getMyOrders, getMonthWiseOrderIncome, getMonthWiseOrderCount, getYearlyTotalOrders, getAllOrders, getSingleOrder, updateOrder, emptyCart} = require("../controller/userController");
 const {authMiddleware, isAdmin} = require("../middleware/authMiddleware");
 const { checkout, paymentVerification } = require("../controller/paymentController");
 
@@ -38,7 +38,7 @@ router.get("/refresh",handleRefershToken)
 router.get("/logout",logOut)
 
 router.get("/cart",authMiddleware, getUserCart)
-// router.delete("/empty-cart",authMiddleware, emptyCart)
+router.delete("/empty-cart",authMiddleware, emptyCart)
 router.delete("/delete-product-cart/:cartItemId",authMiddleware, removeProductFromCart)
 router.delete("/update-product-cart/:cartItemId/:newQuantity",authMiddleware, updateProductQuantityFromCart)
 router.get("/:id",authMiddleware,isAdmin, getAUser)
