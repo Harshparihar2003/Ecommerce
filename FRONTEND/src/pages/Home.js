@@ -20,7 +20,7 @@ const Home = () => {
   const productState = useSelector((state) => state?.product?.product)
   const navigate = useNavigate()
   const blogState = useSelector((state) => state?.blog?.blog)
-  // console.log(blogState[0].image);
+
   useEffect(() => {
     getblogs();
     getProducts()
@@ -225,15 +225,13 @@ const Home = () => {
                       </div>
                       <div className="product-image">
                         <img src={item?.images[0].url} className='d-block mx-auto' width={160} alt="product image" />
-                        {/* <img src={watch} className='img-fluid d-block mx-auto' width={160} alt="product image" /> */}
-                        {/* <img src={watch2} className='img-fluid' alt="product image" /> */}
                       </div>
                       <div className="product-details">
                         <h6 className="brand">{item?.brand}</h6>
                         <h5 className="product-title">
                           {item?.title}
                         </h5>
-                        <ReactStars count={5} size={24} value={item?.totalrating.toString()} activeColor="#ffd700" edit={false} />
+                        <ReactStars count={5} size={24} value={item?.totalrating} activeColor="#ffd700" edit={false} />
 
                         <p className="price">$ {item?.price}</p>
                       </div>

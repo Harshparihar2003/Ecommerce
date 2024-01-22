@@ -9,7 +9,7 @@ import { addToWishlist } from '../features/products/productSlice'
 const Wishlist = () => {
     const dispatch = useDispatch();
     const wishlistState = useSelector((state)=> state?.auth?.wishlist?.wishlist)
-    console.log(wishlistState);
+
     useEffect(()=>{
         getWishlistFromDb()
     },[])
@@ -41,8 +41,8 @@ const Wishlist = () => {
                                 alt="cross" className="position-absolute cross img-fluid" />
                                 <div className="wishlist-card-image bg-white">
                                     <img 
-                                    src="images/watch.jpg"
-                                    // src={item?.images[0].url ? item?.images[0].url : "images/watch.jpg"}
+                                    // src="images/watch.jpg"
+                                    src={item?.images[0].url ? item?.images[0].url : "images/watch.jpg"}
                                     className='img-fluid d-block mx-auto' width={150} alt="watch"/>
                                 </div>
                                 <div className="py-2 px-3">

@@ -26,7 +26,7 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [productUpdateDetail, setProductUpdateDetail] = useState(null)
     const userCartState = useSelector((state)=> state.auth.cartProducts);
-    // console.log(userCartState[0].productId.images[0].url);
+
     const [totalAmount, setTotalAmount] = useState(null)
 
     useEffect(()=>{

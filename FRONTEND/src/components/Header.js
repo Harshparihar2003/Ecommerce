@@ -112,7 +112,7 @@ const Header = () => {
                 </div>
                 <div>
                   <Link to="/wishlist" className='d-flex align-items-center gap-10 text-white'>
-                    <img src={wishlist} alt="wishlist" srcset="" />
+                    <img src={wishlist} alt="wishlist" srcSet="" />
                     <p className='mb-0'>
                       Favourite <br /> Wishlist
                     </p>

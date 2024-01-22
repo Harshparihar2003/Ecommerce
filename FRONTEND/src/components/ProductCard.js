@@ -21,8 +21,6 @@ const ProductCard = (props) => {
   return (
     <>{
         data && data?.map((item,index)=>{
-            console.log("Item", item)
-            console.log("Item")
             return(
                 <div key={index} className={`${location.pathname=="/product" ? `gr-${grid}`: "col-3"}`}>
                 <div

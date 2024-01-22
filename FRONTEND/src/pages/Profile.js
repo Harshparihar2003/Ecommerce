@@ -61,7 +61,7 @@ const Profile = () => {
                     </div>
                     <div className="col-12">
                         <form onSubmit={formik.handleSubmit}>
-                        <div class="mb-3">
+                        <div className="mb-3">
                                 <label htmlFor="example1" className="form-label">First Name</label>
                                 <input type="text" name='firstname' disabled={edit} className="form-control" id="example1" value={formik.values.firstname} onChange={formik.handleChange("firstname")} onBlur={formik.handleBlur("firstname")}/>
                                 <div className="error">
@@ -70,7 +70,7 @@ const Profile = () => {
                                     }
                                 </div>
                             </div>
-                        <div class="mb-3">
+                        <div className="mb-3">
                                 <label htmlFor="example2" className="form-label">Last Name</label>
                                 <input type="text" name='lastname' disabled={edit} className="form-control" id="example2" value={formik.values.lastname}
                                 onChange={formik.handleChange("lastname")} onBlur={formik.handleBlur("lastname")}/>
