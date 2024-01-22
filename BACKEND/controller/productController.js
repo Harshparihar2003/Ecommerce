@@ -4,7 +4,6 @@ const slugify = require("slugify")
 const User = require("../models/userModel")
 const {validateMongoDbId} = require("../utils/validateMongoDb");
 
-
 const createProduct = asyncHandler(async (req, res)=>{
     try {
         if(req.body.title){
