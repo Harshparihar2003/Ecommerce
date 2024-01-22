@@ -8,7 +8,7 @@ const BlogCard = (props) => {
     <>
         <div className="blog-card">
           <div className="card-image">
-            <img src="images/blog-1.jpg" className='img-fluid w-100' alt="blog" />
+            <img src={image} className='img-fluid w-100' alt="blog" />
           </div>
           <div className="blog-content">
             <p className="date">

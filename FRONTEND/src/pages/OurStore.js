@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux"
 import { getAllProducts } from '../features/products/productSlice';
 
 const OurStore = () => {
-    const [grid, setGrid] = useState(4);
+    const [grid, setGrid] = useState(3);
     const dispatch = useDispatch();
     const productState = useSelector((state)=> state.product.product)
     const [brands, setBrands] = useState([])
@@ -130,9 +130,9 @@ const OurStore = () => {
                                     <img onClick={()=> {
                                         setGrid(3)
                                     }} src="images/gr4.svg" className='d-block img-fluid' alt="grid" />
-                                    <img onClick={()=> {
+                                    {/* <img onClick={()=> {
                                         setGrid(4)
-                                    }} src="images/gr3.svg" className='d-block img-fluid' alt="grid" />
+                                    }} src="images/gr3.svg" className='d-block img-fluid' alt="grid" /> */}
                                     <img onClick={()=> {
                                         setGrid(6)
                                     }} src="images/gr2.svg" className='d-block img-fluid' alt="grid" />

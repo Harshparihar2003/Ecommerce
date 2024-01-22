@@ -26,6 +26,7 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [productUpdateDetail, setProductUpdateDetail] = useState(null)
     const userCartState = useSelector((state)=> state.auth.cartProducts);
+    // console.log(userCartState[0].productId.images[0].url);
     const [totalAmount, setTotalAmount] = useState(null)
 
     useEffect(()=>{
@@ -74,7 +75,7 @@ const Cart = () => {
                                 return(
                                     <div key={index} className="d-flex py-3 justify-content-between align-items-center mb-2 cart-data">
                                     <div className='gap-15 cart-col-1 d-flex align-items-center'>
-                                         <div className='w-25'><img src={watch} className='img-fluid' alt="product image" /></div>
+                                         {/* <div className='w-25'><img src={watch} className='img-fluid' alt="product image" /></div> */}
                                          <div className='w-75'>
                                              <p>{item?.productId?.title}</p>
                                              

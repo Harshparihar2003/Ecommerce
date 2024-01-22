@@ -3,7 +3,7 @@ import {BsArrowDownRight, BsArrowUpRight} from "react-icons/bs"
 import { Column } from '@ant-design/plots';
 import {Table} from "antd";
 import {useDispatch, useSelector} from "react-redux"
-import { getMonthlyData, getOrders, getYearlyData } from '../features/auth/authSlice';
+import { getAllOrders, getMonthlyData, getYearlyData } from '../features/auth/authSlice';
 
 const columns = [
   {
@@ -59,7 +59,7 @@ const Dashboard = () => {
   useEffect(()=>{
     dispatch(getMonthlyData(config3))
     dispatch(getYearlyData(config3))
-    dispatch(getOrders(config3))
+    dispatch(getAllOrders(config3))
   },[])
 
   useEffect(()=>{
@@ -78,7 +78,7 @@ const Dashboard = () => {
     for (let i = 0; i < orderState?.length; i++) {
     data1.push({
     key: i,
-    // name: orderState[i]?.user?.email,
+    name: orderState[i]?.shippingInfo?.firstName + " " + orderState[i]?.shippingInfo?.lastName,
     product: orderState[i]?.orderItems?.length,
     price : orderState[i]?.totalPrice,
     dprice : orderState[i]?.totalPriceAfterDiscount,

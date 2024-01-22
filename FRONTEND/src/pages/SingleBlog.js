@@ -31,7 +31,7 @@ const SingleBlog = () => {
                         <h3 className="title">
                         {blogState?.title}
                         </h3>
-                        <img src={blogState?.image[0].url ? blogState?.image[0].url : blog} className='img-fluid w-100 my-4' alt="blog" />
+                        <img src={blogState?.images[0].url ? blogState?.images[0].url : blog} className='img-fluid w-100 my-4' alt="blog" />
                         <p dangerouslySetInnerHTML={{__html : blogState?.description}}></p>
                       </div>
                     </div>

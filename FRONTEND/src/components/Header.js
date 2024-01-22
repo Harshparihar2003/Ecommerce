@@ -12,7 +12,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { getAProduct } from '../features/products/productSlice'
 import { getUserCart } from '../features/user/userSlice'
 
-const Header = () => {s
+const Header = () => {
   const getTokenFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -25,6 +25,8 @@ const Header = () => {s
     Accept: "application/json",
   },
 };
+
+ 
   const authState = useSelector(state => state?.auth)
   const [paginate, setPaginate] = useState(true);
   const dispatch = useDispatch();
@@ -33,9 +35,6 @@ const Header = () => {s
   const productState = useSelector(state=> state?.product?.product)
   const [productOpt, setProductOpt] = useState([])
   const navigate = useNavigate()
-  useEffect(()=>{
-    dispatch(getUserCart(config2))
-  })
   useEffect(()=>{ 
     let sum =0;
     for (let index = 0; index < cartState?.length; index++) {
@@ -43,7 +42,9 @@ const Header = () => {s
         setTotalAmount(sum);
     }
   },[cartState])
-
+  // useEffect(()=>{
+  //   dispatch(getUserCart(config2))
+  // })
   useEffect(()=>{
     let data = [];
     for (let index = 0; index < productState?.length; index++) {

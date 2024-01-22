@@ -37,7 +37,7 @@ const Customers = () => {
       key: i + 1,
       name: customerState[i].firstname + " " + customerState[i].lastname,
       email: customerState[i].email,
-      status: customerState[i].mobile,
+      mobile: customerState[i].mobile,
     });
    }
   }

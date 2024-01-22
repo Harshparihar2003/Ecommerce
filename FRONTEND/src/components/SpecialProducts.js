@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 
 const SpecialProducts = (props) => {
+    
     const {title,brand,totalrating,price,sold,quantity, id} = props;
     return (
         <>

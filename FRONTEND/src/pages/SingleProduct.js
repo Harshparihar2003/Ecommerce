@@ -119,8 +119,9 @@ const SingleProduct = () => {
                         return(
                           <div key={index}>
                             <img
-                          //  src={item?.url}
-                           src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg"
+                           src={item?.url}
+                          
+                          //  src="https://www.zastavki.com/pictures/originals/2014/Brands____Beautiful_watches_065807_.jpg"
                            alt="" className='img-fluid' /></div>
                         )
                       })
